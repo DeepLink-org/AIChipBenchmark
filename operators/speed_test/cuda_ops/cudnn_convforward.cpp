@@ -181,6 +181,99 @@ void test_conv(float& ms, int in_n, int in_c, int in_h, int in_w,
     cudaEventSynchronize(end);
     cudaEventElapsedTime(&ms, start, end);
 
+
+
+
+// cudnnStatus_t cudnnConvolutionBackwardFilter(
+//     cudnnHandle_t                       handle,
+//     const void                         *alpha,
+//     const cudnnTensorDescriptor_t       xDesc,
+//     const void                         *x,
+//     const cudnnTensorDescriptor_t       dyDesc,
+//     const void                         *dy,
+//     const cudnnConvolutionDescriptor_t  convDesc,
+//     cudnnConvolutionBwdFilterAlgo_t     algo,
+//     void                               *workSpace,
+//     size_t                              workSpaceSizeInBytes,
+//     const void                         *beta,
+//     const cudnnFilterDescriptor_t       dwDesc,
+//     void                                *dw)
+
+
+
+
+// cudnnStatus_t cudnnGetConvolutionBackwardFilterWorkspaceSize(
+//     cudnnHandle_t                       handle,
+//     const cudnnTensorDescriptor_t       xDesc,
+//     const cudnnTensorDescriptor_t       dyDesc,
+//     const cudnnConvolutionDescriptor_t  convDesc,
+//     const cudnnFilterDescriptor_t       dwDesc,
+//     cudnnConvolutionBwdFilterAlgo_t     algo,
+//     size_t                             *sizeInBytes)
+
+
+    void* dw = nullptr;
+    size_t filter_size = filt_k * filt_c * filt_h * filt_w;
+    cudaMalloc(&(dw), filter_size*sizeof(T));
+    void* workspace_filter = nullptr;
+    size_t workspace_size_filter = 0;
+
+    size_t freeMem, totalMem;
+    cudaMemGetInfo(&freeMem, &totalMem);
+
+// cudnnStatus_t cudnnGetConvolutionBackwardFilterAlgorithm_v7(
+//     cudnnHandle_t                          handle,
+//     const cudnnTensorDescriptor_t          xDesc,
+//     const cudnnTensorDescriptor_t          dyDesc,
+//     const cudnnConvolutionDescriptor_t     convDesc,
+//     const cudnnFilterDescriptor_t          dwDesc,
+//     const int                              requestedAlgoCount,
+//     int                                   *returnedAlgoCount,
+//     cudnnConvolutionBwdFilterAlgoPerf_t   *perfResults)
+
+    int filter_algo_max_cnt = 0;
+    int returned_algo_cnt = 0;
+    bool algoFound = false;
+
+    cudnnGetConvolutionBackwardFilterAlgorithmMaxCount(cudnn, &filter_algo_max_cnt);
+    std::cout << filter_algo_max_cnt << std::endl;
+    cudnnConvolutionBwdFilterAlgoPerf_t perfResults_filter[filter_algo_max_cnt];
+    CUDNN_CALL(cudnnGetConvolutionBackwardFilterAlgorithm_v7(cudnn, in_desc, out_desc, conv_desc, filt_desc, filter_algo_max_cnt, &returned_algo_cnt, perfResults_filter));
+    cudnnConvolutionBwdFilterAlgo_t algo_filter;
+
+    std::cout << "success" << CUDNN_STATUS_SUCCESS << std::endl;
+    for (int i = 0; i < returned_algo_cnt; i++) {
+        std::cout << perfResults_filter[i].status << std::endl;
+        if (perfResults_filter[i].status == CUDNN_STATUS_SUCCESS
+            && (perfResults_filter[i].memory < freeMem)) {
+            algo_filter = perfResults_filter[i].algo;
+            algoFound = true;
+            break;
+        }
+    }
+    if(algoFound == false) {
+        std::cout << "algo not found  here" << std::endl;
+        return;
+    }
+
+    CUDNN_CALL(cudnnGetConvolutionBackwardFilterWorkspaceSize(cudnn, in_desc, out_desc, conv_desc, filt_desc, algo_filter, &workspace_size_filter));
+    if (workspace_size_filter > 0){
+        cudaMalloc(&workspace_filter, workspace_size_filter);
+    }
+
+    CUDNN_CALL(cudnnConvolutionBackwardFilter(cudnn,&alpha, in_desc, in_data, out_desc, out_data, conv_desc, algo_filter,  workspace_filter, workspace_size_filter, &beta, filt_desc,dw));
+
+
+
+
+
+
+
+
+
+
+
+
     // finalizing
     cudaFreeHost(h_in);
     cudaFreeHost(h_filt);
