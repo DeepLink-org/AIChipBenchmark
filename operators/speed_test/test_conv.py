@@ -27,10 +27,14 @@ if __name__=='__main__':
 
         )
         out=eval(cmd_str)
-        time=float(out.decode())
-        time=format(time/1000, '.3f')  # ms
+        out = out.decode('utf-8')
+        outs = out.split('\n')
+        forward_ms = float(outs[0])      # ms
+        backward_weight_ms = float(outs[1]) # ms
+        backward_data_ms = float(outs[2])    # ms
+        total_time = forward_ms + backward_weight_ms + backward_data_ms
         if not validate:
-            df.at[i, 'baseline'] = time
+            df.at[i, 'baseline'] = format(total_time, '.3f')
         else:
             df.at[i, 'time'] = time
             df.at[i, 'score'] = round(
