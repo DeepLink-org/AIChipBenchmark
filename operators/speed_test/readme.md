@@ -80,8 +80,22 @@ cd LongTail-Bench
 export PYTHONPATH=./long_tail_bench:$PYTHONPATH
 ```
 ### 2 生成基准值
+
+在gpu上生成基准:
 ```
-srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf.csv --outcsv path/to/ltout.csv
+srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf.csv --outcsv path/to/ltout_gpu.csv
+```
+
+在cpu上生成基准:
+* 执行转化脚本
+```bash
+sh script_for_cpu.sh
+```
+转化脚本会生成samples-bak,存放原来的samples，新的samples文件夹已经适配了cpu,不再支持gpu测试。如果要再次测试gpu，可以恢复samples-bak为samples，在执行在gpu上测试的脚本。
+
+* 生成基准
+```bash
+ DEVICE_CPU=1 srun -p $partition --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf.csv --outcsv path/to/ltout_cpu.csv
 ```
 ### 3 测试
 ```
