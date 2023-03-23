@@ -119,7 +119,7 @@ def run(
     @description: Start running cases on one framework, only support
         parrots, torch or xla now. You should prepare the environment
         it needs first and set environment variable FRAMEWORK=parrots
-        or torch、xla.
+        or torch, xla.
     @param {
         run_case_names: The cases you want to run.
     }
