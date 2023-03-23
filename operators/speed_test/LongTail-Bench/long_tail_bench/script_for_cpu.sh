@@ -1,4 +1,5 @@
 #!/bin/bash
+cp -R samples samples-bak
 dir=`dirname $0`/samples
 echo $dir
 gsed -i "s/.cuda()//g" `grep -rl ".cuda()"  $dir`
