@@ -1,0 +1,61 @@
+diff --git a/configs/_base_/datasets/cityscapes.py b/configs/_base_/datasets/cityscapes.py
+index f21867c..f09adfa 100644
+--- a/configs/_base_/datasets/cityscapes.py
++++ b/configs/_base_/datasets/cityscapes.py
+@@ -1,12 +1,19 @@
+ # dataset settings
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/cityscapes/': 'openmmlab:s3://openmmlab/datasets/segmentation/cityscapes/',
++        'data/cityscapes/': 'openmmlab:s3://openmmlab/datasets/segmentation/cityscapes/'
++    }))
++
+ dataset_type = 'CityscapesDataset'
+ data_root = 'data/cityscapes/'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+ crop_size = (512, 1024)
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', file_client_args=file_client_args),
+     dict(type='Resize', img_scale=(2048, 1024), ratio_range=(0.5, 2.0)),
+     dict(type='RandomCrop', crop_size=crop_size, cat_max_ratio=0.75),
+     dict(type='RandomFlip', prob=0.5),
+@@ -17,7 +24,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_semantic_seg']),
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         img_scale=(2048, 1024),
+@@ -39,16 +46,22 @@ data = dict(
+         data_root=data_root,
+         img_dir='leftImg8bit/train',
+         ann_dir='gtFine/train',
+-        pipeline=train_pipeline),
++        pipeline=train_pipeline,
++        file_client_args=file_client_args),
+     val=dict(
+         type=dataset_type,
+         data_root=data_root,
+         img_dir='leftImg8bit/val',
+         ann_dir='gtFine/val',
+-        pipeline=test_pipeline),
++        pipeline=test_pipeline,
++        gt_seg_map_loader_cfg=dict(file_client_args=file_client_args),
++        file_client_args=file_client_args
++        ),
+     test=dict(
+         type=dataset_type,
+         data_root=data_root,
+         img_dir='leftImg8bit/val',
+         ann_dir='gtFine/val',
+-        pipeline=test_pipeline))
++        pipeline=test_pipeline,
++        gt_seg_map_loader_cfg=dict(file_client_args=file_client_args),
++        file_client_args=file_client_args))
