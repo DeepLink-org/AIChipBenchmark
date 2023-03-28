@@ -1,0 +1,4 @@
+operators/speed_test/cuda_ops/build/
+*/*/*/*/*/*/__pycache__/
+*/*/*/*/*/__pycache__/
+*/*/*/*/__pycache__/
