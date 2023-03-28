@@ -77,7 +77,7 @@ srun -p $partition --gres=gpu:1 --exclusive python test_gemm.py gemm_f32.csv 32 
 ```
 cd LongTail-Bench
 
-export PYTHONPATH=./long_tail_bench:$PYTHONPATH
+export PYTHONPATH=$PWD:$PYTHONPATH
 ```
 ### 2 生成基准值
 
