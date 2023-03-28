@@ -6,7 +6,6 @@ import json
 
 from op_config import configs, device
 from utils import to_list, output_to_list, fix_rand, try_deterministic, turn_off_low_precision
-from op_conv_config import get_conv_config
 
 
 def fix_weight(model):
@@ -35,8 +34,6 @@ class OpTestDataGenerator(object):
         self.fp32_path = os.path.join(self.base_dir, "fp32")
         self.run_backward = False
         self.fp16_support = True
-        
-        print("module:", str(self.module), '\tinput_info:', str(self.input_info))
 
     def gen_inputs(self, input_info, data_type):
         """
@@ -196,60 +193,55 @@ if __name__ == "__main__":
     turn_off_low_precision()
     print(f"Using device {device}")
     json_file = out_path + "/info.json"
-    config = configs
-    if case_name and case_name != 'CONV':
-        tester = OpTestDataGenerator(config[case_name], case_name, out_path)
+    if case_name:
+        tester = OpTestDataGenerator(configs[case_name], case_name, out_path)
         tester.run_all()
         exit()
-    else:
-        if case_name == 'CONV':
-            config = get_conv_config()
-        for name, cfg in config.items():
-            tester = OpTestDataGenerator(cfg, name, out_path)
-            tester.run_all()
+    for name, cfg in configs.items():
+        tester = OpTestDataGenerator(cfg, name, out_path)
+        tester.run_all()
 
-            args = []
-            if tester.params is not None:
-                if isinstance(tester.params, dict):
-                    for k, v in tester.params.items():
-                        if isinstance(v, torch.Tensor):
-                            pass
-                        elif isinstance(v, tuple):
-                            ret = []
-                            for t in v:
-                                if isinstance(t, torch.Tensor):
-                                    pass
-                                else:
-                                    ret.append(t)
-                            args.append({k: ret})
-                        else:
-                            args.append({k: v})
-                else:
-                    for p in tester.params:
-                        if p is None:
-                            continue
-                        if isinstance(p, torch.Tensor):
-                            pass
-                        elif isinstance(p, dict):
-                            for k, v in p.items():
-                                if isinstance(v, torch.Tensor):
-                                    pass
-                                else:
-                                    args.append({k: v})
-                        else:
-                            args.append(p)
+        args = []
+        if tester.params is not None:
+            if isinstance(tester.params, dict):
+                for k, v in tester.params.items():
+                    if isinstance(v, torch.Tensor):
+                        pass
+                    elif isinstance(v, tuple):
+                        ret = []
+                        for t in v:
+                            if isinstance(t, torch.Tensor):
+                                pass
+                            else:
+                                ret.append(t)
+                        args.append({k: ret})
+                    else:
+                        args.append({k: v})
+            else:
+                for p in tester.params:
+                    if p is None:
+                        continue
+                    if isinstance(p, torch.Tensor):
+                        pass
+                    elif isinstance(p, dict):
+                        for k, v in p.items():
+                            if isinstance(v, torch.Tensor):
+                                pass
+                            else:
+                                args.append({k: v})
+                    else:
+                        args.append(p)
 
-            code = str(cfg[0])
-            if isinstance(cfg[0], torch.nn.Module):
-                code = "nn." + str(cfg[0])
-            all_info[name] = dict(
-                code=code,
-                input_shapes=tester.get_inputshapes(),
-                need_backward=tester.run_backward,
-                args=args,
-                support_fp16=tester.fp16_support,
-            )
+        code = str(cfg[0])
+        if isinstance(cfg[0], torch.nn.Module):
+            code = "nn." + str(cfg[0])
+        all_info[name] = dict(
+            code=code,
+            input_shapes=tester.get_inputshapes(),
+            need_backward=tester.run_backward,
+            args=args,
+            support_fp16=tester.fp16_support,
+        )
 
-        with open(json_file, "w") as jsonf:
-            json.dump(all_info, jsonf)
-    print("INFO:successfully generate ground_truth_input.")
+    with open(json_file, "w") as jsonf:
+        json.dump(all_info, jsonf)

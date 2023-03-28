@@ -201,7 +201,7 @@ configs = dict(
     det=(torch.det, (2, 10, 10)),
     tril=(torch.tril, (10, 20)),
     triu=(torch.triu, (10, 20)),
-    # eig=(torch.linalg.eigvals, gen_rand((8, 8)), dict(eigenvectors=True), dict(backward=False)),
+    eig=(torch.eig, gen_rand((8, 8)), dict(eigenvectors=True), dict(backward=False)),
     svd=(torch.svd, (10, 20)),
     inverse=(torch.inverse, (10, 10)),
     interpolate=(F.interpolate, (2, 30, 40), dict(scale_factor=2)),

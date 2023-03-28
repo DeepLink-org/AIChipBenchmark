@@ -6,7 +6,6 @@ import csv
 import pandas
 import logging
 from op_config import configs, device
-from op_conv_config import get_conv_config
 from utils import to_list, output_to_list, result_diff, fix_rand, try_deterministic, turn_off_low_precision
 
 logger = logging.getLogger("OpValidater")
@@ -39,7 +38,6 @@ class CudaOpValidater(object):
             return True
         inputs = []
         for i in range(0, self.input_num):
-            print(os.path.join(data_dir, "input_{0}.pt".format(str(i))))
             loaded_input = torch.load(os.path.join(data_dir, "input_{0}.pt".format(str(i)))).to(device)
             # loaded_input contains requires_grad info
             loaded_requires_grad = loaded_input.requires_grad
@@ -142,34 +140,29 @@ if __name__ == "__main__":
     turn_off_low_precision()
 
     logger.warning(f"Using device {device}")
-    config = configs
 
     # test a single op
     case = None
     if len(sys.argv) == 4:
         case = sys.argv[3]
-    if case and case != 'CONV':
-        tester = CudaOpValidater(config[case], case, gt_path)
+    if case is not None:
+        tester = CudaOpValidater(configs[case], case, gt_path)
         tester.run_all()
         exit(0)
     # test all op
-    else:
-        if case == 'CONV':
-            config = get_conv_config()
-        for name, cfg in config.items():
-            tester = CudaOpValidater(cfg, name, gt_path)
-            tester.run_all()
-            all_info[name] = dict(passed=(tester.fp32_result and tester.fp16_result))
-        #  save result to json and csv
-        json_file = output_path + "/cuda_val_result.json"
-        with open(json_file, "w") as jsonf:
-            json.dump(all_info, jsonf)
+    for name, cfg in configs.items():
+        tester = CudaOpValidater(cfg, name, gt_path)
+        tester.run_all()
+        all_info[name] = dict(passed=(tester.fp32_result and tester.fp16_result))
+    #  save result to json and csv
+    json_file = output_path + "/cuda_val_result.json"
+    with open(json_file, "w") as jsonf:
+        json.dump(all_info, jsonf)
 
-        csv_file = output_path + "/cuda_val_result.csv"
-        oplist = list(all_info.keys())
-        pd_data = dict(
-            NO=[i for i in range(0, len(oplist))], op=oplist, validationResult=[val["passed"] for val in all_info.values()]
-        )
-        df = pandas.DataFrame.from_dict(pd_data)
-        df.to_csv(csv_file, index=False)
-        print("INFO:successfully validate")
+    csv_file = output_path + "/cuda_val_result.csv"
+    oplist = list(all_info.keys())
+    pd_data = dict(
+        NO=[i for i in range(0, len(oplist))], op=oplist, validationResult=[val["passed"] for val in all_info.values()]
+    )
+    df = pandas.DataFrame.from_dict(pd_data)
+    df.to_csv(csv_file, index=False)
