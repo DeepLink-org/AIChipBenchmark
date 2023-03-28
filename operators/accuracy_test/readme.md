@@ -70,7 +70,6 @@ python cuda_ground_truth_gen.py your/output/path op_name(e.g. conv)
 ```sh
 python cuda_ground_truth_gen.py your/output/path CONV
 ```
-此时不会生成csv文件
 
 ## logger环境变量
 默认logging等级为`warning`, 通过环境变量 `PYLOGLEVEL` 可以指定logging等级; 例如 `export PYLOGLEVEL=INFO` 设置为logger等级为`info`。
