@@ -19,7 +19,7 @@ def test_transformer_encoder_block(d_model, n_head, ffn_hidden, batch_size, seq_
     for i in range(num_iterations):
         output_tensor = transformer_encoder_block(input_tensor, None)
     end_time = time.time()
-    print("Time per iteration: {:.6f} seconds".format((end_time - start_time) / num_iterations))
+    print("Time per iteration of encoder: {:.6f} seconds".format((end_time - start_time) / num_iterations))
 
 
 def test_transformer_decoder_block(d_model, n_head, ffn_hidden, batch_size, tgt_len, memory_len, num_iterations):
@@ -37,7 +37,7 @@ def test_transformer_decoder_block(d_model, n_head, ffn_hidden, batch_size, tgt_
         output_tensor = transformer_decoder_block(tgt_tensor, memory_tensor, None, None)
     end_time = time.time()
 
-    print("Time per iteration: {:.6f} seconds".format((end_time - start_time) / num_iterations))
+    print("Time per iteration of decoder: {:.6f} seconds".format((end_time - start_time) / num_iterations))
 
 # test
 test_transformer_encoder_block(d_model=512, n_head=8, ffn_hidden=2048, batch_size=32, seq_len=512, num_iterations=100)
