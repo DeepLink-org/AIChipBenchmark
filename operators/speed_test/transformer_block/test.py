@@ -3,9 +3,6 @@ import torch.nn as nn
 import time
 from blocks.encoder_layer import EncoderLayer
 from blocks.decoder_layer import DecoderLayer
-from layers.multi_head_attention import MultiHeadAttention
-from layers.layer_norm import LayerNorm
-from layers.position_wise_feed_forward import PositionwiseFeedForward
 
 
 def test_transformer_encoder_block(d_model, n_head, ffn_hidden, batch_size, seq_len, num_iterations):
