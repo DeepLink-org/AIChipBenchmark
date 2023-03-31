@@ -1,4 +1,4 @@
-git push --set-upstream origin yb/add_transformer_block_testimport torch
+import torch
 import torch.nn as nn
 import time
 from blocks.encoder_layer import EncoderLayer
