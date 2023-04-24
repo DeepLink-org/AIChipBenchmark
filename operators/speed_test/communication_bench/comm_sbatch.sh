@@ -19,5 +19,5 @@ export LOCAL_RANK=$MV2_COMM_WORLD_LOCAL_RANK
 
 
 #mpirun -np $ngpu $bin/osu_nccl_allgather -m $3:$3  -M 8589934592 -i 1000 -d cuda
-mpirun -np $ngpu $bin/osu_nccl_allgather -m $3:$3  -M 8589934592 -i 1000 -d cuda
+mpirun -np $ngpu $bin/osu_nccl_allreduce -m $3:$3  -M 8589934592 -i 1000 -d cuda
 
