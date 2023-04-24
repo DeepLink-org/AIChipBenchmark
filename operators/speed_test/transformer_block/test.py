@@ -43,7 +43,7 @@ def test_transformer_decoder_block(d_model, n_head, ffn_hidden, batch_size, tgt_
     print("Time per iteration of decoder: {:.6f} seconds".format((end_time - start_time) / num_iterations))
 
 # test
-test_transformer_encoder_block(d_model=512, n_head=8, ffn_hidden=2048, batch_size=32, seq_len=512, num_iterations=100)
-test_transformer_decoder_block(d_model=512, n_head=8, ffn_hidden=2048, batch_size=32, tgt_len=512, memory_len=512, num_iterations=100)
+test_transformer_encoder_block(d_model=512, n_head=8, ffn_hidden=2048, batch_size=32, seq_len=512, num_iterations=1000)
+test_transformer_decoder_block(d_model=512, n_head=8, ffn_hidden=2048, batch_size=32, tgt_len=512, memory_len=512, num_iterations=1000)
 
 
