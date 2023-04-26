@@ -13,7 +13,7 @@ git clone https://github.com/open-mmlab/mmsegmentation.git
 ## 2. 安装mmcv，替换hook文件
 mmcv安装参考官网 <https://mmcv.readthedocs.io/en/latest/get_started/build.html>
 将 ${MMCV_PATH}/mmcv/runner/hooks/iter_timer.py  替换为本目录下的 iter_timer.py文件。
-制定环境变量
+指定环境变量
 ```sh
 export PYTHONPATH=${MMCV_PATH}:$PYTHONPATH
 ```
