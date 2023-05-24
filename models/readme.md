@@ -1,7 +1,7 @@
 # open-mmlab模型多卡训练性能测试
 
 ## 1. 拉取模型代码
-建议版本：[mmcv1.5.3]<https://github.com/open-mmlab/mmcv/tree/v1.5.3>、[mmclassification0.23.2]<https://github.com/open-mmlab/mmpretrain/tree/v0.23.2>、[mmdetection2.24.1]<https://github.com/open-mmlab/mmdetection/tree/v2.24.1>、[mmsegemention0.24.1]<https://github.com/open-mmlab/mmsegmentation/tree/v0.24.1>
+建议版本：[mmcv1.5.3](https://github.com/open-mmlab/mmcv/tree/v1.5.3)、[mmclassification0.23.2](https://github.com/open-mmlab/mmpretrain/tree/v0.23.2)、[mmdetection2.24.1](https://github.com/open-mmlab/mmdetection/tree/v2.24.1)、[mmsegemention0.24.1](https://github.com/open-mmlab/mmsegmentation/tree/v0.24.1)
 命令参考：
 ```
 git clone https://github.com/open-mmlab/mmcv.git

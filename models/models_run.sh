@@ -30,7 +30,7 @@ elif [ 'mmdet' == $1 ];then
        "solo/decoupled_solo_r50_fpn_1x_coco.py"
        "ssd/ssd300_coco.py"
        "swin/mask_rcnn_swin-t-p4-w7_fpn_1x_coco.py"
-       "yolo/yolov3_d53_mstrain-416_273e_coco.py"
+       "yolo/yolov3_d53_320_273e_coco.py"
     )
 elif [ 'mmseg' == $1 ];then
     frame=$1
