@@ -59,7 +59,11 @@
           git clone https://github.com/open-mmlab/mmsegmentation.git
           git clone https://github.com/NVIDIA/DeepLearningExamples.git
           ```
-
+    版本可参考：[mmcv1.5.3](https://github.com/open-mmlab/mmcv/tree/v1.5.3)、[mmclassification0.23.2](https://github.com/open-mmlab/mmpretrain/tree/v0.23.2)、[mmdetection2.24.1](https://github.com/open-mmlab/mmdetection/tree/v2.24.1)、[mmsegemention0.24.1](https://github.com/open-mmlab/mmsegmentation/tree/v0.24.1)
+    - mmcv安装参考[官方文档](https://mmcv.readthedocs.io/en/latest/get_started/build.html)。收集性能数据时可参考本目录下的`iter_timer.py`文件，修改`${MMCV_PATH}/mmcv/runner/hooks/iter_timer.py`。并设定环境变量：
+        ```sh
+        export PYTHONPATH=${MMCV_PATH}:$PYTHONPATH
+        ```
     - `export MAX_NODES=4`: 设置Slurm最多占用的节点数量，在测试openmm模型的时候，会查询当前使用的节点数量，如果超过这个值则新的任务会等待。
 
     - 数据集：
