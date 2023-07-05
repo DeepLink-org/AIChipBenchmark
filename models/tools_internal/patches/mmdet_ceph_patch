@@ -1,0 +1,258 @@
+diff --git a/configs/_base_/datasets/coco_detection.py b/configs/_base_/datasets/coco_detection.py
+index 149f590..5ec60d6 100644
+--- a/configs/_base_/datasets/coco_detection.py
++++ b/configs/_base_/datasets/coco_detection.py
+@@ -3,9 +3,17 @@ dataset_type = 'CocoDataset'
+ data_root = 'data/coco/'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations', with_bbox=True),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, file_client_args=file_client_args),
+     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
+     dict(type='RandomFlip', flip_ratio=0.5),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -14,7 +22,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         img_scale=(1333, 800),
+@@ -35,15 +43,18 @@ data = dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_train2017.json',
+         img_prefix=data_root + 'train2017/',
+-        pipeline=train_pipeline),
++        pipeline=train_pipeline,
++        file_client_args=file_client_args),
+     val=dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_val2017.json',
+         img_prefix=data_root + 'val2017/',
+-        pipeline=test_pipeline),
++        pipeline=test_pipeline,
++        file_client_args=file_client_args),
+     test=dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_val2017.json',
+         img_prefix=data_root + 'val2017/',
+-        pipeline=test_pipeline))
++        pipeline=test_pipeline,
++        file_client_args=file_client_args))
+ evaluation = dict(interval=1, metric='bbox')
+diff --git a/configs/_base_/datasets/coco_instance.py b/configs/_base_/datasets/coco_instance.py
+index 9901a85..6dd9a05 100644
+--- a/configs/_base_/datasets/coco_instance.py
++++ b/configs/_base_/datasets/coco_instance.py
+@@ -3,9 +3,17 @@ dataset_type = 'CocoDataset'
+ data_root = 'data/coco/'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, with_mask=True, file_client_args=file_client_args),
+     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
+     dict(type='RandomFlip', flip_ratio=0.5),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -14,7 +22,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels', 'gt_masks']),
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         img_scale=(1333, 800),
+@@ -35,15 +43,18 @@ data = dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_train2017.json',
+         img_prefix=data_root + 'train2017/',
+-        pipeline=train_pipeline),
++        pipeline=train_pipeline,
++        file_client_args=file_client_args),
+     val=dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_val2017.json',
+         img_prefix=data_root + 'val2017/',
+-        pipeline=test_pipeline),
++        pipeline=test_pipeline,
++        file_client_args=file_client_args),
+     test=dict(
+         type=dataset_type,
+         ann_file=data_root + 'annotations/instances_val2017.json',
+         img_prefix=data_root + 'val2017/',
+-        pipeline=test_pipeline))
++        pipeline=test_pipeline,
++        file_client_args=file_client_args))
+ evaluation = dict(metric=['bbox', 'segm'])
+diff --git a/configs/centernet/centernet_resnet18_dcnv2_140e_coco.py b/configs/centernet/centernet_resnet18_dcnv2_140e_coco.py
+index cb225ef..bfae090 100644
+--- a/configs/centernet/centernet_resnet18_dcnv2_140e_coco.py
++++ b/configs/centernet/centernet_resnet18_dcnv2_140e_coco.py
+@@ -2,6 +2,14 @@ _base_ = [
+     '../_base_/datasets/coco_detection.py',
+     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
+ ]
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
+ 
+ model = dict(
+     type='CenterNet',
+@@ -33,8 +41,8 @@ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+ 
+ train_pipeline = [
+-    dict(type='LoadImageFromFile', to_float32=True, color_type='color'),
+-    dict(type='LoadAnnotations', with_bbox=True),
++    dict(type='LoadImageFromFile', to_float32=True, color_type='color', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, file_client_args=file_client_args),
+     dict(
+         type='PhotoMetricDistortion',
+         brightness_delta=32,
+@@ -56,7 +64,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile', to_float32=True),
++    dict(type='LoadImageFromFile', to_float32=True, file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         scale_factor=1.0,
+diff --git a/configs/fcos/fcos_center-normbbox-centeronreg-giou_r50_caffe_fpn_gn-head_dcn_1x_coco.py b/configs/fcos/fcos_center-normbbox-centeronreg-giou_r50_caffe_fpn_gn-head_dcn_1x_coco.py
+index cf93c91..8fac4d2 100644
+--- a/configs/fcos/fcos_center-normbbox-centeronreg-giou_r50_caffe_fpn_gn-head_dcn_1x_coco.py
++++ b/configs/fcos/fcos_center-normbbox-centeronreg-giou_r50_caffe_fpn_gn-head_dcn_1x_coco.py
+@@ -16,13 +16,20 @@ model = dict(
+         loss_bbox=dict(type='GIoULoss', loss_weight=1.0)),
+     # training and testing settings
+     test_cfg=dict(nms=dict(type='nms', iou_threshold=0.6)))
+-
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
+ # dataset settings
+ img_norm_cfg = dict(
+     mean=[103.530, 116.280, 123.675], std=[1.0, 1.0, 1.0], to_rgb=False)
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations', with_bbox=True),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, file_client_args=file_client_args),
+     dict(type='Resize', img_scale=(1333, 800), keep_ratio=True),
+     dict(type='RandomFlip', flip_ratio=0.5),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -31,7 +38,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         img_scale=(1333, 800),
+diff --git a/configs/ssd/ssd300_coco.py b/configs/ssd/ssd300_coco.py
+index 1891bad..b4067bf 100644
+--- a/configs/ssd/ssd300_coco.py
++++ b/configs/ssd/ssd300_coco.py
+@@ -2,13 +2,23 @@ _base_ = [
+     '../_base_/models/ssd300.py', '../_base_/datasets/coco_detection.py',
+     '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
+ ]
++
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
++
+ # dataset settings
+ dataset_type = 'CocoDataset'
+ data_root = 'data/coco/'
+ img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[1, 1, 1], to_rgb=True)
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations', with_bbox=True),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, file_client_args=file_client_args),
+     dict(
+         type='Expand',
+         mean=img_norm_cfg['mean'],
+@@ -31,7 +41,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='MultiScaleFlipAug',
+         img_scale=(300, 300),
+diff --git a/configs/yolo/yolov3_d53_mstrain-416_273e_coco.py b/configs/yolo/yolov3_d53_mstrain-416_273e_coco.py
+index 94325c5..65ad57b 100644
+--- a/configs/yolo/yolov3_d53_mstrain-416_273e_coco.py
++++ b/configs/yolo/yolov3_d53_mstrain-416_273e_coco.py
+@@ -1,9 +1,17 @@
+ _base_ = './yolov3_d53_mstrain-608_273e_coco.py'
+ # dataset settings
+ img_norm_cfg = dict(mean=[0, 0, 0], std=[255., 255., 255.], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/',
++        'data/coco/':
++        'openmmlab:s3://openmmlab/datasets/detection/coco/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
+-    dict(type='LoadAnnotations', with_bbox=True),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
++    dict(type='LoadAnnotations', with_bbox=True, file_client_args=file_client_args),
+     dict(
+         type='Expand',
+         mean=img_norm_cfg['mean'],
+@@ -13,7 +21,7 @@ train_pipeline = [
+         type='MinIoURandomCrop',
+         min_ious=(0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+         min_crop_size=0.3),
+-    dict(type='Resize', img_scale=[(320, 320), (416, 416)], keep_ratio=True),
++    dict(type='Resize', img_scale=[(320, 320), (416, 416)], keep_ratio=True, file_client_args=file_client_args),
+     dict(type='RandomFlip', flip_ratio=0.5),
+     dict(type='PhotoMetricDistortion'),
+     dict(type='Normalize', **img_norm_cfg),
