@@ -1,0 +1,103 @@
+{
+    "cls": {
+        "defaults": {
+            "mmcv" : "v1.5.0",
+            "mmcls": "v0.23.0",
+            "base_dir": "mmclassification",
+            "accu_gpus": 8,
+            "accu_key_value": "accuracy_top-1"
+        },
+        "densenet121": {
+            "cfg": "configs/densenet/densenet121_4xb256_in1k.py"
+        },
+        "efficientnet_b2":{
+            "cfg": "configs/efficientnet/efficientnet-b2_8xb32_in1k.py"
+        },
+        "mobilenetv2":{
+            "accu_gpus": 8,
+            "cfg": "configs/mobilenetv2/mobilenet-v2_8xb32_in1k.py"
+        },
+        "resnet50": {
+            "cfg": "configs/resnet/resnet50_8xb32_in1k.py"
+        },
+        "senet50": {
+            "cfg": "configs/seresnet/seresnet50_8xb32_in1k.py"
+        },
+        "shufflenetv2": {
+            "cfg": "configs/shufflenet_v2/shufflenet-v2-1x_16xb64_in1k.py"
+        },
+        "swintransformer":{
+            "cfg": "configs/swin_transformer/swin-large_16xb64_in1k.py"
+        },
+        "vgg16": {
+            "accu_gpus": 8,
+            "cfg": "configs/vgg/vgg16_8xb32_in1k.py"
+        }
+    },
+    "det" : {
+        "defaults": {
+            "mmcv" : "v1.3.17",
+            "mmdet": "v2.24.0",
+            "base_dir": "mmdetection",
+            "accu_gpus": 8,
+            "accu_key_value": "bbox_mAP"
+        },
+        "cascade_rcnn_r50": {
+            "cfg": "configs/cascade_rcnn/cascade_rcnn_r50_fpn_1x_coco.py"
+        },
+        "centernet_r18": {
+            "cfg": "configs/centernet/centernet_resnet18_140e_coco.py"
+        },
+        "faster_rcnn_r50": {
+            "cfg": "configs/faster_rcnn/faster_rcnn_r50_fpn_1x_coco.py"
+        },
+        "fcos_r50" :{
+            "cfg": "configs/fcos/fcos_center-normbbox-centeronreg-giou_r50_caffe_fpn_gn-head_dcn_1x_coco.py"
+        },
+        "mask_rcnn_r50":{
+            "cfg": "configs/mask_rcnn/mask_rcnn_r50_fpn_1x_coco.py",
+            "accu_key_value": ["segm_mAP", "bbox_mAP"]
+        },
+        "retinanet": {
+            "cfg": "configs/retinanet/retinanet_r50_fpn_1x_coco.py"
+        },
+        "solo": {
+            "cfg": "configs/solo/decoupled_solo_r50_fpn_1x_coco.py",
+            "accu_key_value": "segm_mAP"
+        },
+        "ssd300" : {
+            "cfg": "configs/ssd/ssd300_coco.py"
+        },
+        "swin": {
+            "cfg": "configs/swin/mask_rcnn_swin-t-p4-w7_fpn_1x_coco.py",
+            "accu_key_value": ["segm_mAP", "bbox_mAP"]
+        },
+        "yolov3": {
+            "cfg": "configs/yolo/yolov3_d53_mstrain-416_273e_coco.py"
+        }
+    },
+    "seg" : {
+        "defaults":{
+            "mmseg": "v0.23.0",
+            "mmcv": "v1.5.0",
+            "base_dir": "mmsegmentation",
+            "accu_gpus": 4,
+            "accu_key_value": "mIoU"
+        },
+        "apcnet_r50": {
+            "cfg": "configs/apcnet/apcnet_r50-d8_512x1024_40k_cityscapes.py"
+        },
+        "deeplabv3":{
+            "cfg": "configs/deeplabv3/deeplabv3_r50-d8_512x1024_40k_cityscapes.py"
+        },
+        "fcn":{
+            "cfg": "configs/fcn/fcn_r50-d8_512x1024_40k_cityscapes.py"
+        },
+        "pspnet":{
+            "cfg": "configs/pspnet/pspnet_r50-d8_512x1024_40k_cityscapes.py"
+        }
+    },
+    "global" : {
+        "perf_excludes": ["shufflenetv2", "densenet121", "cascade_rcnn_r50", "centernet_r18", "apcnet_r50"]
+    }
+}

@@ -1,0 +1,188 @@
+diff --git a/configs/_base_/datasets/imagenet_bs32.py b/configs/_base_/datasets/imagenet_bs32.py
+index 8a54659..807f02c 100644
+--- a/configs/_base_/datasets/imagenet_bs32.py
++++ b/configs/_base_/datasets/imagenet_bs32.py
+@@ -2,8 +2,15 @@
+ dataset_type = 'ImageNet'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
++        'data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='RandomResizedCrop', size=224),
+     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -12,7 +19,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_label'])
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='Resize', size=(256, -1)),
+     dict(type='CenterCrop', crop_size=224),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -25,6 +32,7 @@ data = dict(
+     train=dict(
+         type=dataset_type,
+         data_prefix='data/imagenet/train',
++        ann_file='data/imagenet/meta/train.txt',
+         pipeline=train_pipeline),
+     val=dict(
+         type=dataset_type,
+diff --git a/configs/_base_/datasets/imagenet_bs32_pil_resize.py b/configs/_base_/datasets/imagenet_bs32_pil_resize.py
+index 22b74f7..f15b366 100644
+--- a/configs/_base_/datasets/imagenet_bs32_pil_resize.py
++++ b/configs/_base_/datasets/imagenet_bs32_pil_resize.py
+@@ -2,8 +2,14 @@
+ dataset_type = 'ImageNet'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
++        'data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='RandomResizedCrop', size=224, backend='pillow'),
+     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -12,7 +18,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_label'])
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='Resize', size=(256, -1), backend='pillow'),
+     dict(type='CenterCrop', crop_size=224),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -25,6 +31,7 @@ data = dict(
+     train=dict(
+         type=dataset_type,
+         data_prefix='data/imagenet/train',
++        ann_file='data/imagenet/meta/train.txt',
+         pipeline=train_pipeline),
+     val=dict(
+         type=dataset_type,
+diff --git a/configs/_base_/datasets/imagenet_bs64.py b/configs/_base_/datasets/imagenet_bs64.py
+index b9f866a..da40a51 100644
+--- a/configs/_base_/datasets/imagenet_bs64.py
++++ b/configs/_base_/datasets/imagenet_bs64.py
+@@ -2,8 +2,14 @@
+ dataset_type = 'ImageNet'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
++        'data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
++    }))
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='RandomResizedCrop', size=224),
+     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -12,7 +18,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_label'])
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='Resize', size=(256, -1)),
+     dict(type='CenterCrop', crop_size=224),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -25,6 +31,7 @@ data = dict(
+     train=dict(
+         type=dataset_type,
+         data_prefix='data/imagenet/train',
++        ann_file='data/imagenet/meta/train.txt',
+         pipeline=train_pipeline),
+     val=dict(
+         type=dataset_type,
+diff --git a/configs/_base_/datasets/imagenet_bs64_pil_resize.py b/configs/_base_/datasets/imagenet_bs64_pil_resize.py
+index 95d0e1f..0c6d237 100644
+--- a/configs/_base_/datasets/imagenet_bs64_pil_resize.py
++++ b/configs/_base_/datasets/imagenet_bs64_pil_resize.py
+@@ -2,8 +2,15 @@
+ dataset_type = 'ImageNet'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
++        'data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
++    }))
++
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='RandomResizedCrop', size=224, backend='pillow'),
+     dict(type='RandomFlip', flip_prob=0.5, direction='horizontal'),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -12,7 +19,7 @@ train_pipeline = [
+     dict(type='Collect', keys=['img', 'gt_label'])
+ ]
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(type='Resize', size=(256, -1), backend='pillow'),
+     dict(type='CenterCrop', crop_size=224),
+     dict(type='Normalize', **img_norm_cfg),
+@@ -25,6 +32,7 @@ data = dict(
+     train=dict(
+         type=dataset_type,
+         data_prefix='data/imagenet/train',
++        ann_file='data/imagenet/meta/train.txt',
+         pipeline=train_pipeline),
+     val=dict(
+         type=dataset_type,
+diff --git a/configs/_base_/datasets/imagenet_bs64_swin_224.py b/configs/_base_/datasets/imagenet_bs64_swin_224.py
+index 4a059a3..b5ba8dd 100644
+--- a/configs/_base_/datasets/imagenet_bs64_swin_224.py
++++ b/configs/_base_/datasets/imagenet_bs64_swin_224.py
+@@ -5,8 +5,15 @@ dataset_type = 'ImageNet'
+ img_norm_cfg = dict(
+     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
+ 
++file_client_args = dict(
++    backend='petrel',
++    path_mapping=dict({
++        '.data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/',
++        'data/imagenet/': 'openmmlab:s3://openmmlab/datasets/classification/imagenet/'
++    }))
++
+ train_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='RandomResizedCrop',
+         size=224,
+@@ -38,7 +45,7 @@ train_pipeline = [
+ ]
+ 
+ test_pipeline = [
+-    dict(type='LoadImageFromFile'),
++    dict(type='LoadImageFromFile', file_client_args=file_client_args),
+     dict(
+         type='Resize',
+         size=(256, -1),
+@@ -55,6 +62,7 @@ data = dict(
+     train=dict(
+         type=dataset_type,
+         data_prefix='data/imagenet/train',
++        ann_file='data/imagenet/meta/train.txt',
+         pipeline=train_pipeline),
+     val=dict(
+         type=dataset_type,
