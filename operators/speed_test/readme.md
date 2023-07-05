@@ -1,6 +1,6 @@
 
 # 算子性能测试
-算子性能测试包括CUDA中GEMM、Conv2d算子性能测试和长尾算子性能测试。
+算子性能测试包括CUDA中GEMM、Conv2d算子性能测试、长尾算子性能测试、通讯算子性能测试、transformer_block测试。
 ## GEMM、Conv2d算子性能测试
 包括GEMM算子、Conv2d算子在FP16(使用tensor core)、FP32条件下进行性能测试。
 
@@ -77,7 +77,7 @@ srun -p $partition --gres=gpu:1 --exclusive python test_gemm.py gemm_f32.csv 32 
 ```
 cd LongTail-Bench
 
-export PYTHONPATH=./long_tail_bench:$PYTHONPATH
+export PYTHONPATH=$PWD:$PYTHONPATH
 ```
 ### 2 生成基准值
 
@@ -91,15 +91,18 @@ srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py 
 ```bash
 sh script_for_cpu.sh
 ```
-转化脚本会生成samples-bak,存放原来的samples，新的samples文件夹已经适配了cpu,不再支持gpu测试。如果要再次测试gpu，可以恢复samples-bak为samples，在执行在gpu上测试的脚本。
+转化脚本会生成samples-bak,存放原来的samples，新的samples文件夹已经适配了cpu,不再支持gpu测试。如果要再次测试gpu，可以恢复samples-bak为samples后，再执行在gpu上测试的脚本。
 
 * 生成基准
 ```bash
  DEVICE_CPU=1 srun -p $partition --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf.csv --outcsv path/to/ltout_cpu.csv
 ```
-### 3 测试
+### 3 验证测试
 ```
-srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf.csv --outcsv path/to/ltout.csv --validate
+srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py -f ../longtail_perf_gpu.csv --outcsv path/to/ltout.csv --validate
 ```
-计算的结果存在输出参数`path/to/ltout.csv`中
+计算和打分的结果存在输出参数`path/to/ltout.csv`中。
+note:
+如果为cpu上的验证，上述测试命令中基准文件`../longtail_perf_gpu.csv` 替换为`../longtail_perf_cpu.csv`;
+仅支持fp16方式的特殊芯片，上述测试命令中基准文件`../longtail_perf_gpu.csv` 替换为`../longtail_perf_gpu_fp16.csv`。
 

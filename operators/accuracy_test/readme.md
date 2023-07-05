@@ -27,6 +27,16 @@ python cuda_ground_truth_gen.py your/output/path
 
 基准值数据将保存在 `your/output/path` 目录下。
 
+若生成单个算子的测例, 运行命令:
+```sh
+python cuda_ground_truth_gen.py your/output/path op_name(e.g. conv)
+```
+
+若生成conv算子的全部测例, 运行命令:
+```sh
+python cuda_ground_truth_gen.py your/output/path CONV
+```
+
 ### fp16 不支持的算子:
 部分算子/数据类型是当前版本(pytorch1.8)CUDA不支持的，例如：
 
@@ -49,6 +59,17 @@ python cuda_ground_truth_gen.py your/output/path
 CUBLAS_WORKSPACE_CONFIG=:4096:8 python cuda_op_validate.py path/to/data path/to/output
 ```
 精度验证的结果为 `your/output/path/cuda_val_result.csv`。
+
+若验证单个算子的测例, 运行命令:
+```sh
+python cuda_ground_truth_gen.py your/output/path op_name(e.g. conv)
+```
+此时不会生成csv文件
+
+若验证conv算子的全部测例, 运行命令:
+```sh
+python cuda_ground_truth_gen.py your/output/path CONV
+```
 
 ## logger环境变量
 默认logging等级为`warning`, 通过环境变量 `PYLOGLEVEL` 可以指定logging等级; 例如 `export PYLOGLEVEL=INFO` 设置为logger等级为`info`。

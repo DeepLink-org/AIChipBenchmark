@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 cp -R samples samples-bak
 dir=`dirname $0`/samples
 echo $dir
