@@ -19,7 +19,7 @@ cd cuda_ops
 srun -p $partition -n 1 -N 1 mkdir -p build && cd build && cmake .. && make
 
 ```
-### 2 生成基准值
+### 2 生成基准值（仅针对A100芯片，第三方芯片略过）
 #### 单独运行
 ```
 cd cuda_ops
