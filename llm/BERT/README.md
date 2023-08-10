@@ -36,7 +36,7 @@ python main.py -c /path/to/dataset/wikipedia_bert -o output_path/bert --cuda_dev
 
 ### 性能指标
 
-根据训练日志，采集其中性能指标TGS、TFlops、Loss数值
+根据训练日志，采集其中Loss数值
 ```bash
 INFO:root:Epoch [0], Step [93180], next_loss[0.17973171174526215], mask_loss[3.3067405223846436], avg_loss: 4.6533, next_avg_acc: 88.94230382266771, mask_avg_acc33.582920239352674, lr9.15978787878788e-05
 ```
