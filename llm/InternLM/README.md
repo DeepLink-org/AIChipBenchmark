@@ -4,7 +4,9 @@
 
 - 代码下载：https://github.com/InternLM/InternLM
 - 安装：参考 https://github.com/InternLM/InternLM/blob/main/doc/install.md, 需根据厂商环境进行适配
-- 数据集：预训练使用内置dummy数据集
+- 数据集：
+  - 预训练：使用内置dummy数据集
+  - 微调：使用Alpaca数据集，数据集处理参考：https://github.com/InternLM/InternLM/blob/main/doc/usage.md
 
 
 ## 配置
