@@ -1,4 +1,4 @@
-# InternLM 预训练(微调)
+# InternLM 预训练/微调
 
 ## 准备工作
 
@@ -80,9 +80,7 @@ torchrun --nnodes=1 --nproc_per_node=8 train.py --config ./configs/7B_sft.py --l
 ```
 ### 稳定性指标
 
-对于稳定性指标，记录前100个step的Loss。
-
-
+对于稳定性指标，记录前100个step的Loss，并计算与基准值的方差。
 
 ## 训练目标
 训练step > 100000或者训练时间大于72小时，Loss小于 xxx。
