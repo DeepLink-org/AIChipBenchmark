@@ -31,6 +31,8 @@ MLP_RATIO = 8 / 3
 NUM_LAYER = 40
 VOCAB_SIZE = 103168
 ```
+
+InternLM-65B 模型可参考配置：`65B_sft.py`。
 ### 并行配置
 
 训练并行配置样例如下，厂商可根据芯片显存大小调整并行配置以避免OOM，比如设置zero1=1 tensor=8：
