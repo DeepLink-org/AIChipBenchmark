@@ -21,7 +21,7 @@ python3 -m lmdeploy.serve.turbomind.deploy llama /path/to/llama/model llama /pat
 
 
 ### 性能指标
-启动性能测试的命令，参考 https://github.com/InternLM/lmdeploy/blob/main/benchmark/README.md
+启动性能测试的命令，参考 https://github.com/InternLM/lmdeploy/blob/main/benchmark/README.md，需根据厂商环境进行适配。
 
 ```python
 python profile_generation.py \
@@ -34,6 +34,7 @@ python profile_generation.py \
 
 
 ### 模型初始化加载指标
+模型加载命令如下，需根据厂商环境进行适配。
 ```python
 python profile_ckp_time.py  /path/to/your/model --tp 8
 ```
