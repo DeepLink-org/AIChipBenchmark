@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from transformers import get_linear_schedule_with_warmup, AdamW
 from model import BERTLM, BERT
 from .optim_schedule import ScheduledOptim
-import os
+import os, time
 
 import tqdm
 import logging
@@ -40,9 +40,10 @@ class BERTTrainer:
 
         # Setup cuda device for BERT training, argument -c, --cuda should be true
         cuda_condition = torch.cuda.is_available() and with_cuda
-        print(cuda_devices)
-        self.device = torch.device(f"cuda:{cuda_devices[0]}" if cuda_condition else "cpu")
         
+        self.device = torch.device(f"cuda:{cuda_devices[0]}" if cuda_condition else "cpu")
+        print(f"self.device: {self.device}, cuda_device: {cuda_devices},torch.cuda.device_count(): {torch.cuda.device_count()}")
+        logging.info(f"self.device: {self.device}, cuda_device: {cuda_devices},torch.cuda.device_count(): {torch.cuda.device_count()}")
         #self.device = torch.device("cuda:0" if cuda_condition else "cpu")
       
         # This BERT model will be saved every epoch
@@ -123,13 +124,16 @@ class BERTTrainer:
                               bar_format="{l_bar}{r_bar}")
 
         
-       
+        tgs_sum = 0       
 
         for i, data in data_iter:
             if i <= self.step:
                 continue
             # 0. batch_data will be sent into the device(GPU or cpu)
         
+            # # 记录起始时刻
+            step_start_time = time.time() 
+            
             data = {key: value.to(self.device) for key, value in data.items()}
 
             # 1. forward the next_sentence_prediction and masked_lm model
@@ -152,21 +156,27 @@ class BERTTrainer:
                 self.optim.step()
                 self.optim_schedule.step()
 
+            # # 记录结束时刻
+            step_end_time = time.time()
+            
             # next sentence prediction accuracy
             correct = next_sent_output.argmax(dim=-1).eq(data["is_next"]).sum().item()
             self.avg_loss += loss.item()
             self.total_correct += correct
             self.total_element += data["is_next"].nelement()
-
-            
-            if i % self.log_freq == 0:
                 
-                logging.info('Epoch [{}], Step [{}], next_loss[{}], mask_loss[{}], avg_loss: {:.4f}, next_avg_acc: {}, loss: {}, lr: {}'
+            if i % self.log_freq == 0:
+                tks_per_gpu_per_sec = data["bert_input"].nelement() / (step_end_time - step_start_time)
+                tgs_sum += tks_per_gpu_per_sec
+                
+                logging.info('Epoch [{}], Step [{}], next_loss[{}], mask_loss[{}], avg_loss: {:.4f}, next_avg_acc: {}, loss: {}, lr: {}, tgs= {}, tgs_sum= {}'
                      .format(epoch, i, next_loss.item(),mask_loss.item(), self.avg_loss / (i + 1),self.total_correct * 100.0 / self.total_element, loss.item(), 
-                             self.optim.param_groups[0]["lr"]))
+                             self.optim.param_groups[0]["lr"], tks_per_gpu_per_sec, tgs_sum ))
                 self.step = i
                 # self.save(self.export_path)
             
+            #if i > 500:
+            #    exit()
 
         print("EP%d_%s, avg_loss=" % (epoch, str_code), self.avg_loss / len(data_iter), "total_acc=",
               self.total_correct * 100.0 / self.total_element)
