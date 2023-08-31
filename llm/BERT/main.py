@@ -33,7 +33,7 @@ def train():
     
     parser.add_argument("--ckpt", type=str, default=None, help="initial model")
     parser.add_argument("--with_cuda", type=bool, default=True, help="training with CUDA: true, or false")
-    parser.add_argument("--log_freq", type=int, default=10, help="printing loss every n iter: setting n")
+    parser.add_argument("--log_freq", type=int, default=50, help="printing loss every n iter: setting n")
     parser.add_argument("--corpus_lines", type=int, default=None, help="total number of lines in corpus")
     parser.add_argument("--cuda_devices", type=int, nargs='+', default=None, help="CUDA device ids")
     parser.add_argument("--on_memory", type=bool, default=True, help="Loading on memory: true or false")

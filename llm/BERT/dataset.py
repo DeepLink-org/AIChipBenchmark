@@ -8,7 +8,6 @@ import os
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
 
-
 class BERTDataset(Dataset):
     def __init__(self, corpus_path, seq_len, encoding="utf-8", corpus_lines=None, on_memory=True):
         
@@ -57,7 +56,6 @@ class BERTDataset(Dataset):
                   "bert_label": bert_label,
                   "segment_label": segment_label,
                   "is_next": is_next_label}
-
         return {key: torch.tensor(value) for key, value in output.items()}
 
     def random_word(self, tokens):
@@ -139,3 +137,4 @@ class BERTDataset(Dataset):
     def get_random_line(self):
         
         return self.lines[random.randrange(len(self.lines))][1]
+
