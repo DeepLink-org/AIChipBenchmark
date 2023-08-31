@@ -14,8 +14,8 @@ python finetune.py \
     --base_model 'decapoda-research/llama-7b-hf' \
     --data_path 'yahma/alpaca-cleaned' \
     --output_dir './lora-alpaca' \
-    --batch_size 512 \
-    --micro_batch_size 16 \
+    --batch_size 128 \
+    --micro_batch_size 4 \
     --num_epochs 3 \
     --learning_rate 1e-4 \
     --cutoff_len 512 \
@@ -42,13 +42,17 @@ python finetune.py \
 
 ### 性能指标
 
-根据训练日志，采集其中Loss数值和相关指标。
+根据训练日志，采集其中Loss数值和相关性能指标。
 ```bash
-{'loss': 1.0114, 'learning_rate': 5.759162303664922e-06, 'epoch': 2.88}
-{'loss': 0.9182, 'learning_rate': 5.235602094240838e-07, 'epoch': 2.98}
-100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 291/291 [9:11:13<00:00, 71.46s/it]
-{'train_runtime': 33073.8456, 'train_samples_per_second': 4.514, 'train_steps_per_second': 0.009, 'train_loss': 1.1619453557168495, 'epoch': 2.99}
+{'loss': 0.8603, 'learning_rate': 3.5714285714285714e-06, 'epoch': 2.91}
+{'loss': 0.8456, 'learning_rate': 2.631578947368421e-06, 'epoch': 2.93}
+{'loss': 0.8863, 'learning_rate': 1.6917293233082707e-06, 'epoch': 2.96}
+{'loss': 0.8408, 'learning_rate': 7.518796992481203e-07, 'epoch': 2.98}
+{'train_runtime': 3581.7097, 'train_samples_per_second': 41.678, 'train_steps_per_second': 0.325, 'train_tokens_per_second(tgs)': 1228.267, 'train_loss': 0.9499486045739085, 'epoch': 2.99}
 ```
+
+`tgs`指标依赖以下PR：https://github.com/huggingface/transformers/pull/25858
+
 ### 稳定性指标
 对于稳定性指标，记录前100个step的Loss。
 
