@@ -6,6 +6,15 @@
 - 安装：参考 https://github.com/codertimo/BERT-pytorch/blob/master/requirements.txt , 适配后代码依赖 `transformers(>=4.12.5)`，代码依赖的torch版本在`1.7.0`已验证，环境需根据厂商环境进行适配。
 - 数据集：AlpacaDataCleaned https://huggingface.co/datasets/yahma/alpaca-cleaned
 
+### 代码适配修改
+性能数据需要替换`transformers(==4.32.0)`中的
+
+`python3.8/site-packages/transformers/trainer.py`
+`python3.8/site-packages/transformers/trainer_utils.py`
+
+为本目录下相应文件。
+
+相关的PR，可以参考：https://github.com/huggingface/transformers/pull/25858
 
 ## 启动及数据采集
 
@@ -51,7 +60,6 @@ python finetune.py \
 {'train_runtime': 3581.7097, 'train_samples_per_second': 41.678, 'train_steps_per_second': 0.325, 'train_tokens_per_second(tgs)': 1228.267, 'train_loss': 0.9499486045739085, 'epoch': 2.99}
 ```
 
-`tgs`指标依赖以下PR：https://github.com/huggingface/transformers/pull/25858
 
 ### 稳定性指标
 对于稳定性指标，记录前100个step的Loss。
