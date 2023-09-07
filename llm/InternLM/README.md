@@ -7,7 +7,7 @@
 - 数据集：
   - 预训练：使用内置dummy数据集
   - 微调：使用Alpaca数据集，数据集处理参考：https://github.com/InternLM/InternLM/blob/main/doc/usage.md
-
+- 微调模型权重：https://github.com/InternLM/InternLM/tree/main#model-zoo
 
 ## 配置
 
@@ -33,6 +33,9 @@ VOCAB_SIZE = 103168
 ```
 
 InternLM-65B 模型可参考配置：`65B_sft.py`。
+
+InternLM-7B 模型微调的参考配置：`7B_sft_alpaca.py`
+
 ### 并行配置
 
 训练并行配置样例如下，厂商可根据芯片显存大小调整并行配置以避免OOM，比如设置zero1=1 tensor=8：
@@ -80,6 +83,7 @@ torchrun --nnodes=1 --nproc_per_node=8 train.py --config ./configs/7B_sft.py --l
 754323328192e-05,loss_scale=65536.0,grad_norm=77.8995810422784,micro_num=1,num_consumed_tokens=262144,inf_nan_skip_batches=0,num_samples_in_batch=8,largest_length=2048,largest_batch
 =8,smallest_batch=8,adam_beta2=0.95,fwd_bwd_time=13.78
 ```
+
 ### 稳定性指标
 
 对于稳定性指标，记录前100个step的Loss，并计算与基准值的方差。
