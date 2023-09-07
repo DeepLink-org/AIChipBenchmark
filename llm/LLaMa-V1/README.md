@@ -4,7 +4,7 @@
 ## 准备工作
 
 - 代码下载：https://github.com/InternLM/lmdeploy
-- 安装：参考 https://github.com/InternLM/lmdeploy/blob/main/README_zh-CN.md, 需根据厂商环境进行适配
+- 安装：参考 https://github.com/InternLM/lmdeploy/blob/main/README_zh-CN.md, 需根据厂商环境进行适配（lmdeploy==0.0.5）
 - 数据集：LLAMA-V1数据集（7B/65B），https://github.com/facebookresearch/llama/blob/llama_v1/README.md
 
 
@@ -24,9 +24,9 @@ python3 -m lmdeploy.serve.turbomind.deploy llama /path/to/llama/model llama /pat
 ```
 [llama]
 ...
-max_batch_size = 64
+max_batch_size = 128
 ...
-cache_max_entry_count = 64
+cache_max_entry_count = 128
 ...
 ```
 
