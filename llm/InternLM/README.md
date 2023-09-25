@@ -53,7 +53,11 @@ parallel = dict(
 - pipeline：流水线并行大小，目前只支持 1，默认值为 1
 - tensor：张量并行大小，通常是每个节点的 GPU 数量，默认值为 1
 
-注意：`数据并行大小 = 总的 GPU 数目 / 流水线并行大小 / 张量并行大小`
+注意：
+
+1. 数据并行大小：`数据并行大小 = 总的 GPU 数目 / 流水线并行大小 / 张量并行大小`
+
+2. 调增并行策略，需要保持 `global_batch_size`不变。 其中`global_batch_size=micro_bsz * micro_num * 数据并行大小`。`micro_bsz`和`micro_num`可以在配置中进行修改。
 
 参考：https://github.com/InternLM/InternLM/blob/main/doc/usage.md
 
