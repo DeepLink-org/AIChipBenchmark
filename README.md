@@ -23,11 +23,11 @@
         <td>考察计算芯片的计算能力，关键指标之一</td>
     </tr>
     <tr>
-        <td>内存规格 </td>
+        <td<a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">内存规格</a></td>
         <td>考察芯片的显存容量和显存带宽</td>
     </tr>
     <tr>
-        <td>通信带宽</td>
+        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">通信带宽</a></td>
         <td>考察芯片的跨卡跨机数据传输能力</td>
     </tr>
     <tr>
@@ -45,16 +45,16 @@
     </tr>
     <tr>
         <td rowspan="2">功能测试</td>
-        <td>算子功能</td>
+        <td><a href=="https://github.com/DeepLink-org/AIChipBenchmark/tree/main/operators/accuracy_test">算子功能 </a></td>
         <td>考察芯片对算子的支持程度</td>
     </tr>
     <tr>
-        <td>模型功能</td>
+        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/models/readme.md">模型功能 </a></td>
         <td>考察芯片对基础模型的支持程度</td>
     </tr>
     <tr>
         <td rowspan="3">性能测试</td>
-        <td>算子性能</td>
+        <td><a href ="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/readme.md">算子性能 </a></td>
         <td>考察算子在芯片上的运算时间</td>
     </tr>
     <tr>
@@ -80,6 +80,6 @@
 </div>
 
 ## 参与测评
-    1. 报名表
-    2. 报名方式
-    3. 报名流程
+1. 报名表
+2. 报名方式
+3. 报名流程
