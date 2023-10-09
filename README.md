@@ -23,7 +23,7 @@
         <td>考察计算芯片的计算能力，关键指标之一</td>
     </tr>
     <tr>
-        <td<a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">内存规格</a></td>
+        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">内存规格</a></td>
         <td>考察芯片的显存容量和显存带宽</td>
     </tr>
     <tr>
