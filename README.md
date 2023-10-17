@@ -23,11 +23,12 @@
         <td>考察计算芯片的计算能力，关键指标之一</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">内存规格</a></td>
+        <td>内存规格</td>
+        <!-- <a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md"></a> -->
         <td>考察芯片的显存容量和显存带宽</td>
     </tr>
     <tr>
-        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">通信带宽</a></td>
+        <td>通信带宽</td>
         <td>考察芯片的跨卡跨机数据传输能力</td>
     </tr>
     <tr>
@@ -62,7 +63,7 @@
         <td>考察模型在芯片上的训练性能</td>
     </tr>
     <tr>
-        <td>通信性能</td>
+        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">通信性能</a></td>
         <td>考察算⼦在单节点多芯⽚、多节点多芯⽚条件下的性能表现</td>
     </tr>
 </table>
@@ -79,7 +80,15 @@
   <img src="large_model_evalue.png" width="400"/>
 </div>
 
-## 参与测评
-1. 报名表
-2. 报名方式
-3. 报名流程
+## 测评流程
+
+（1）于上一期厂商反馈意见，更新评测实施方案并发放； 
+
+（2）厂商基于实施方案对自家芯片进行测试； 
+
+（3）厂商提交数据和验证材料，实验室进行结果核验； 
+
+（4）实验室完成单芯片评测报告整理，点对点发放。 
+
+## 联系方式
+如果您所代表的硬件厂商有意向参与硬件测评，或您有相关建议和反馈，有欢迎与我们联系：deeplink_benchmark@pjlab.org.cn。
