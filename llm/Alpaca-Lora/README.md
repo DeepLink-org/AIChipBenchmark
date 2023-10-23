@@ -60,11 +60,5 @@ python finetune.py \
 {'train_runtime': 3581.7097, 'train_samples_per_second': 41.678, 'train_steps_per_second': 0.325, 'train_tokens_per_second(tgs)': 1228.267, 'train_loss': 0.9499486045739085, 'epoch': 2.99}
 ```
 
-
-### 稳定性指标
-对于稳定性指标，记录前100个step的Loss。
-
-
-
 ## 训练目标
-训练epoch > 290或者训练时间大于72小时，训练Loss小于 1.01。
+根据参考配置训练后，训练Loss小于 0.95。
