@@ -83,7 +83,7 @@
 ## 测评流程
 
 <div align="center">
-  <img src="pipeline.png" width="400"/>
+  <img src="pipeline.png" width="90%"/>
 </div>
 
 （1）季度测评开始前，联系硬件测评工作人员(或邮件联系"deeplink_benchmark@pjlab.org.cn")，确认参与本季度测评
