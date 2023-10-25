@@ -82,13 +82,17 @@
 
 ## 测评流程
 
-（1）于上一期厂商反馈意见，更新评测实施方案并发放； 
+<div align="center">
+  <img src="pipeline.png" width="400"/>
+</div>
 
-（2）厂商基于实施方案对自家芯片进行测试； 
+（1）季度测评开始前，联系硬件测评工作人员(或邮件联系"deeplink_benchmark@pjlab.org.cn")，确认参与本季度测评
 
-（3）厂商提交数据和验证材料，实验室进行结果核验； 
+（2）季度测评开始，参与测评的芯片请阅读“[测评标准&实施方案](https://aicarrier.feishu.cn/wiki/WOMuwRlF6ilBf5kug8DcbpZwnqb?from=from_copylink)”，基于实施方案对自家芯片进行测试； 
 
-（4）实验室完成单芯片评测报告整理，点对点发放。 
+（3）厂商提交数据和验证材料，实验室会进行结果核验； 
+
+（4）实验室完成单芯片评测报告整理（可参考：[报告模版](https://aicarrier.feishu.cn/wiki/R970wOBEhihaoakWkuMco9ognu7)），点对点发放。 
 
 ## 联系方式
 如果您所代表的硬件厂商有意向参与硬件测评，或您有相关建议和反馈，有欢迎与我们联系：deeplink_benchmark@pjlab.org.cn。
