@@ -1,6 +1,6 @@
 #!/bin/bash
 set +x
-$partitiion=$1
+partitiion=$1
 
 srun -p $partitiion -N 4 -n 32 --ntasks-per-node=8 --gpus-per-task=1 python benchmark.py \
     -c 70b -g -b 2 \
