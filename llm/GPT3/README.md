@@ -122,10 +122,21 @@ bash train_gpt3_175b_distributed_tgs.sh \
 
 根据训练日志，采集其中Loss数值和相关性能指标。
 ```bash
-
-待补充
+ iteration        5/      10 | consumed samples:         7680 | consumed tokens:     15728640 | elapsed time per iteration (ms): 344656.1 | learning rate: 2.270E-05 | global batch size:  1536 | lm loss: 1.100078E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.457 | tokens per gpu per second (tgs): 142.612 | TFLOPs: 153.38 |
+ iteration        6/      10 | consumed samples:         9216 | consumed tokens:     18874368 | elapsed time per iteration (ms): 347319.2 | learning rate: 1.392E-05 | global batch size:  1536 | lm loss: 1.100214E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.422 | tokens per gpu per second (tgs): 141.518 | TFLOPs: 152.20 |
+ iteration        7/      10 | consumed samples:        10752 | consumed tokens:     22020096 | elapsed time per iteration (ms): 345333.7 | learning rate: 8.059E-06 | global batch size:  1536 | lm loss: 1.100195E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.448 | tokens per gpu per second (tgs): 142.332 | TFLOPs: 153.08 |
+ iteration        8/      10 | consumed samples:        12288 | consumed tokens:     25165824 | elapsed time per iteration (ms): 346430.5 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.100105E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.434 | tokens per gpu per second (tgs): 141.881 | TFLOPs: 152.59 |
+ iteration        9/      10 | consumed samples:        13824 | consumed tokens:     28311552 | elapsed time per iteration (ms): 347071.6 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.100164E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.426 | tokens per gpu per second (tgs): 141.619 | TFLOPs: 152.31 |
+ iteration       10/      10 | consumed samples:        15360 | consumed tokens:     31457280 | elapsed time per iteration (ms): 344835.7 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.099972E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.454 | tokens per gpu per second (tgs): 142.537 | TFLOPs: 153.30 |
 
 ```
 
 ## 训练目标
-根据参考配置训练后，训练Loss小于 ** （待补充），且ppl指标小于 ** （待补充）。
+根据参考配置训练后，训练到第`2400`个step时，Loss小于`9.01`，且ppl指标小于`8181`。
+
+```bash
+ iteration     2400/    8247 | consumed samples:      1864624 | consumed tokens:   3818749952 | elapsed time per iteration (ms): 315879.9 | learning rate: 5.498E-05 | global batch size:  1536 | lm loss: 9.002386E+00 | loss scale: 17179869184.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.863 | tokens per gpu per second (tgs): 155.603 | TFLOPs: 167.35 |
+------------------------------------------------------------------------------------------------
+ validation loss at iteration 2400 | lm loss value: 9.009587E+00 | lm loss PPL: 8.181144E+03 | 
+------------------------------------------------------------------------------------------------
+```
