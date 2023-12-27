@@ -18,7 +18,7 @@ v2-1: https://huggingface.co/stabilityai/stable-diffusion-2-1
 测试命令：
 
 ```bash
-python3 demo_txt2img.py "a beautiful photograph of Mt. Fuji during cherry blossom" --hf-token=$HF_TOKEN --version 1.5 --batch-size 1 --height 512 --width 512
+python3 demo_txt2img.py "a beautiful photograph of Mt. Fuji during cherry blossom" --hf-token=$HF_TOKEN --version 1.5 --batch-size 1 --height 768 --width 768
 ```
 参数说明：
 - version：模型权重
