@@ -8,16 +8,16 @@ if [ $# != 1 ] ; then
 fi
 
 #7B
-cmd_7b="srun -p pat_rd --gres=gpu:1 python profile_ckp_time.py  /mnt/lustre/share_data/PAT/datasets/llama/llama_v1_workspace"
+cmd_7b="srun -p pat_rd --gres=gpu:1 python profile_ckp_time.py  /mnt/lustrenew/dongkaixing1.vendor/llama2/7B_tp2 --tp 2"
 
-#65B
-cmd_65b="srun -p pat_rd --gres=gpu:8 python profile_ckp_time.py  /mnt/lustre/share_data/PAT/datasets/llama/65B/llama_v1_workspace/ --tp 8"
+#70B
+cmd_70b="srun -p pat_rd --gres=gpu:8 python profile_ckp_time.py  /mnt/lustrenew/dongkaixing1.vendor/llama2/70B --tp 8"
 
 cmd=""
 if [[ "$1" == "7B" ]]; then
     cmd=$cmd_7b
 elif [[ $1 == '65B' ]]; then
-    cmd=$cmd_65b
+    cmd=$cmd_70b
 else 
     echo "USAGE: bash test_ckp.sh 7B/65B"
     exit 1;
