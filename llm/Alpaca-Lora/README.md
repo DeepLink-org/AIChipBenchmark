@@ -16,6 +16,32 @@
 
 相关的PR，可以参考：https://github.com/huggingface/transformers/pull/25858
 
+
+#### 关闭`mixed-int8`（可选）
+
+修改`alpaca-lora/finetune.py`如下：
+```bash
+     model = LlamaForCausalLM.from_pretrained(
+         base_model,
+-        load_in_8bit=True,
++        load_in_8bit=False,
+         torch_dtype=torch.float16,
+         device_map=device_map,
+     )
+ 
+     tokenizer = LlamaTokenizer.from_pretrained(base_model)
+@@ -169,9 +219,10 @@ def train(
+             ] * user_prompt_len + tokenized_full_prompt["labels"][
+                 user_prompt_len:
+             ]  # could be sped up, probably
+         return tokenized_full_prompt
+ 
+-    model = prepare_model_for_int8_training(model)
++    # model = prepare_model_for_int8_training(model)
+ 
+```
+
+
 ## 启动及数据采集
 
 ```bash
@@ -42,10 +68,10 @@ python finetune.py \
 - base_model：表示模型路径
 - data_path：数据集路径
 - output_dir ：输出路径
-- batch_size/micro_batch_size ：批大小
-- num_epochs ：训练次数
-- cutoff_len ：句子最大长度，这个参数严重影响训练时间与模型性能
-- lora_r：lora的秩，一般取2，4，8，64
+- batch_size/micro_batch_size ：批大小，不要修改。
+- num_epochs ：训练次数，不要修改。
+- cutoff_len ：句子最大长度，这个参数严重影响训练时间与模型性能，不要修改。
+- lora_r：lora的秩，一般取2，4，8，64，不要修改。
 
 
 

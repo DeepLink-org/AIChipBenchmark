@@ -103,6 +103,7 @@ DATASETCACHE="$PATH_TO/gptcache"
 - fp16：开启混合精度
 - flash-attn：出于性能考虑，训练使用flash attenstion v2
 - 并行配置：64卡下，模型并行tp=8，流水线并行pp=8
+- `dp=1`，需要`dp`保持一致。
 
 
 ### 性能指标
