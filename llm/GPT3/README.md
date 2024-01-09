@@ -99,7 +99,7 @@ DATASETCACHE="$PATH_TO/gptcache"
 
 
 预训练超参说明：
-- batch_size：global_batch_size=1536，micro-batch-size=1，不要修改
+- batch_size：global_batch_size=1536，需要保持`global_batch_size`一致。
 - fp16：开启混合精度
 - flash-attn：出于性能考虑，训练使用flash attenstion v2
 - 并行配置：64卡下，模型并行tp=8，流水线并行pp=8
