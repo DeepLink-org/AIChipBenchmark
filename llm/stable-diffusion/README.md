@@ -136,8 +136,6 @@ Mixed precision type: fp16
 {'force_upcast', 'norm_num_groups'} was not found in config. Values will be initialized to default values.
 {'class_embeddings_concat', 'num_attention_heads', 'time_cond_proj_dim', 'time_embedding_type', 'resnet_skip_time_act', 'num_class_embeds', 'conv_out_kernel', 'upcast_attention', 'timestep_post_act', 'use_linear_projection', 'time_embedding_act_fn', 'cross_attention_norm', 'addition_time_embed_dim', 'addition_embed_type', 'time_embedding_dim', 'only_cross_attention', 'resnet_out_scale_factor', 'reverse_transformer_layers_per_block', 'encoder_hid_dim', 'class_embed_type', 'projection_class_embeddings_input_dim', 'addition_embed_type_num_heads', 'mid_block_type', 'resnet_time_scale_shift', 'conv_in_kernel', 'dropout', 'mid_block_only_cross_attention', 'dual_cross_attention', 'encoder_hid_dim_type', 'transformer_layers_per_block', 'attention_type'} was not found in config. Values will be initialized to default values.
 {'class_embeddings_concat', 'num_attention_heads', 'time_cond_proj_dim', 'time_embedding_type', 'resnet_skip_time_act', 'num_class_embeds', 'conv_out_kernel', 'upcast_attention', 'timestep_post_act', 'use_linear_projection', 'time_embedding_act_fn', 'cross_attention_norm', 'addition_time_embed_dim', 'addition_embed_type', 'time_embedding_dim', 'only_cross_attention', 'resnet_out_scale_factor', 'reverse_transformer_layers_per_block', 'encoder_hid_dim', 'class_embed_type', 'projection_class_embeddings_input_dim', 'addition_embed_type_num_heads', 'mid_block_type', 'resnet_time_scale_shift', 'conv_in_kernel', 'dropout', 'mid_block_only_cross_attention', 'dual_cross_attention', 'encoder_hid_dim_type', 'transformer_layers_per_block', 'attention_type'} was not found in config. Values will be initialized to default values.
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
 03/06/2024 17:32:14 - INFO - __main__ - ***** Running training *****
 03/06/2024 17:32:14 - INFO - __main__ -   Num examples = 833
 03/06/2024 17:32:14 - INFO - __main__ -   Num Epochs = 26
@@ -145,20 +143,6 @@ dkx, num_update_steps_per_epoch 4
 03/06/2024 17:32:14 - INFO - __main__ -   Total train batch size (w. parallel, distributed & accumulation) = 256
 03/06/2024 17:32:14 - INFO - __main__ -   Gradient Accumulation steps = 4
 03/06/2024 17:32:14 - INFO - __main__ -   Total optimization steps = 101
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
-dkx, len(train_dataloader) 14
-dkx, num_update_steps_per_epoch 4
 
 Steps:   0%|          | 0/101 [00:00<?, ?it/s]
 Steps:   0%|          | 0/101 [00:03<?, ?it/s, lr=1e-5, step_loss=0.0799]
