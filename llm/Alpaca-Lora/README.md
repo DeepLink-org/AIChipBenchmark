@@ -3,7 +3,8 @@
 ## 准备工作
 
 - 代码下载：git clone https://github.com/tloen/alpaca-lora.git
-- 安装：参考 https://github.com/codertimo/BERT-pytorch/blob/master/requirements.txt , 适配后代码依赖 `transformers(>=4.12.5)`，代码依赖的torch版本在`1.7.0`已验证，环境需根据厂商环境进行适配。
+- 安装：参考 https://github.com/tloen/alpaca-lora/blob/main/requirements.txt 
+- 环境依赖：`peft==0.3.0.dev0`, `bitsandbytes==0.41.1`, `apex==0.1`, `transformers>=4.28.0`等，依赖包版本供参考
 - 数据集：AlpacaDataCleaned https://huggingface.co/datasets/yahma/alpaca-cleaned
 
 ### 代码适配修改
