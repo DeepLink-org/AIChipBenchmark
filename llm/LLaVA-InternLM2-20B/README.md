@@ -3,13 +3,14 @@
 ## 准备工作
 
 1. 根据 [XTuner 文档](https://github.com/InternLM/xtuner/tree/770bac38bc905794eb38e53de4f54f98e30a77dc?tab=readme-ov-file#installation)准备运行环境；
-   - 注意，默认安装步骤不一定能正确安装 PyTorch 版本，例如使用 N 卡 CUDA 版本 11.8 需要安装 `pytorch-cuda=11.8`，而非默认提供的版本。
+   - 注意，默认安装步骤不一定能正确安装 PyTorch 版本，例如使用 N 卡 CUDA 版本 11.8 应该额外安装 `pytorch-cuda=11.8`。
    - 本次测试使用了 DeepSpeed，如果不启用则需要调整依赖及配置。
 2. 下载预训练数据集 [liuhaotian/LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/tree/main)，并**解压** `images.zip`；
 3. （可选）下载预训练模型。如果没有提前下载，它们会在预训练阶段自动下载：
    - [internlm/internlm2-chat-20b](https://huggingface.co/internlm/internlm2-chat-20b)
    - [openai/clip-vit-large-patch14-336](https://huggingface.co/openai/clip-vit-large-patch14-336)
 4. 将修改好的配置文件 llava_internlm2_chat_20b_clip_vit_large_p14_336_e1_gpu8_pretrain.py 复制至工作目录；
+   - 原版配置可参考 [XTuner 仓库](https://github.com/InternLM/xtuner/blob/770bac38bc905794eb38e53de4f54f98e30a77dc/xtuner/configs/llava/internlm2_chat_20b_clip_vit_large_p14_336/pretrain/llava_internlm2_chat_20b_clip_vit_large_p14_336_e1_gpu8_pretrain.py)；
    - 如果没有提前下载预训练数据集，则需要修改配置文件中的模型路径为模型名称。
 
       ```python
@@ -32,7 +33,7 @@
 
 ## 开始训练
 
-使用 xtuner 启动预训练。
+使用 XTuner 启动预训练。
 
 ### 1 节点 8 卡
 
