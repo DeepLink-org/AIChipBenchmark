@@ -170,6 +170,7 @@ ocs/diffusers/main/en/optimization/xformers for more details."
 
 关键配置：
 - mixed_precision：开启混合精度fp16
+- resolution：在功能测试时为256，性能测试时改为960
 - 单机1卡
 
 
