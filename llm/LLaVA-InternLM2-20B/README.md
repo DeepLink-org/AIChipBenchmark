@@ -3,8 +3,8 @@
 ## 准备工作
 
 1. 根据 [XTuner 文档](https://github.com/InternLM/xtuner/tree/770bac38bc905794eb38e53de4f54f98e30a77dc?tab=readme-ov-file#installation)准备运行环境；
-   - 注意，默认安装步骤不一定能正确安装 PyTorch 版本，例如使用 N 卡 CUDA 版本 11.8 应该额外安装 `pytorch-cuda=11.8`。
-   - 本次测试使用了 DeepSpeed，如果不启用则需要调整依赖及配置。
+   - 注意，默认安装步骤不一定能正确安装 PyTorch 版本（例如使用 N 卡 CUDA 版本 11.8 应该额外安装 `pytorch-cuda=11.8`），请注意检查。
+   - 本次测试需要使用 DeepSpeed（如果不启用则需要修改依赖及配置）。
 2. 下载预训练数据集 [liuhaotian/LLaVA-Pretrain](https://huggingface.co/datasets/liuhaotian/LLaVA-Pretrain/tree/main)，并**解压** `images.zip`；
 3. （可选）下载预训练模型。如果没有提前下载，它们会在预训练阶段自动下载：
    - [internlm/internlm2-chat-20b](https://huggingface.co/internlm/internlm2-chat-20b)
@@ -35,14 +35,6 @@
 
 使用 XTuner 启动预训练。
 
-### 1 节点 8 卡
-
-单节点训练如下所示，其中 `NPROC_PER_NODE` 即当前节点可用卡的数量。
-
-```bash
-NPROC_PER_NODE=8 xtuner train llava_internlm2_chat_20b_clip_vit_large_p14_336_e1_gpu8_pretrain.py --deepspeed deepspeed_zero2
-```
-
 ### 4 节点 8 卡（共 32 卡）
 
 分布式训练依赖环境中的 `$WORLD_SIZE`、`$MASTER_PORT`、`$MASTER_ADDR`、`$RANK` 等环境变量。
@@ -52,6 +44,16 @@ NPROC_PER_NODE=8 NNODES=$WORLD_SIZE PORT=$MASTER_PORT ADDR=$MASTER_ADDR NODE_RAN
 ```
 
 其它情况可以调整 `NPROC_PER_NODE`、`NNODES` 等参数进行训练。
+
+### 1 节点 8 卡
+
+单节点训练如下所示，其中 `NPROC_PER_NODE` 即当前节点可用卡的数量。
+
+```bash
+NPROC_PER_NODE=8 xtuner train llava_internlm2_chat_20b_clip_vit_large_p14_336_e1_gpu8_pretrain.py --deepspeed deepspeed_zero2
+```
+
+不涉及分布式训练，可用于单机调试。
 
 ## 性能指标
 
