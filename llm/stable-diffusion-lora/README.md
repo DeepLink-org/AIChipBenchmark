@@ -170,7 +170,6 @@ ocs/diffusers/main/en/optimization/xformers for more details."
 
 关键配置：
 - mixed_precision：开启混合精度fp16
-- resolution：在功能测试时为256，性能测试时改为960
 - 单机1卡
 
 
@@ -234,6 +233,7 @@ Copy-and-paste the text below in your GitHub issue
 - train_batch_size：per device batch size，设置为8
 - gradient_accumulation_steps： 梯度累计，设置为4
 - max_train_steps: 性能迭代次数，设置为2000
+- resolution：在功能测试时为256，性能测试时改为960
 - gradient checkpointing：处于性能考虑，关闭梯度检查点功能
 
 
@@ -290,4 +290,6 @@ Loading pipeline components...: 100%|██████████| 7/7 [00:04<
 
 
 ## 训练目标
-训练`step = 101` ，在train_loss.log 中的train_loss的20次平均值对于 stable diffusion v1.5 小于 `0.079`, train_loss的10次 平均值对于stable diffusion v2.1 小于 `0.268`。
+训练`step = 2000` ，
+在train_loss.log 中的train_loss的20次平均值对于 stable diffusion v1.5 小于 `0.079`, 
+在train_loss.log 中的train_loss的10次平均值对于 stable diffusion v2.1 小于 `0.268`。
