@@ -18,6 +18,12 @@ export LOCAL_RANK=$MV2_COMM_WORLD_LOCAL_RANK
 ## -d TYPE accelerator device buffers can be of TYPE `cuda' or `openacc'
 
 
-#mpirun -np $ngpu $bin/osu_nccl_allgather -m $3:$3  -M 8589934592 -i 1000 -d cuda
-mpirun -np $ngpu $bin/osu_nccl_allreduce -m $3:$3  -M 8589934592 -i 1000 -d cuda
-
+if [ "$commtype"  == "all-gather" ]; then
+    echo "$commtype"
+    mpirun -np $ngpu $bin/osu_nccl_allgather -m $3:$3  -M 8589934592 -i 1000 -d cuda
+elif [ "$commtype"  == "all-reduce" ]; then
+    echo "$commtype"
+    mpirun -np $ngpu $bin/osu_nccl_allreduce -m $3:$3  -M 8589934592 -i 1000 -d cuda
+else
+    echo "Not Supported Comm Ops"
+fi

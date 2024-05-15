@@ -33,7 +33,7 @@ srun -p your_partition -n 1 -N 1 --gres=gpu:1 make && make install
 ```
 cd ../
 
-sh -x test_all.sh your_partition $BINDIR/libexec/osu-micro-benchmarks/nccl/collective result.json
+sh -x test_all.sh your_partition $BINDIR/libexec/osu-micro-benchmarks/nccl/collective result.json all-reduce
 
 ```
 测试结果保存在`result.json`中.
