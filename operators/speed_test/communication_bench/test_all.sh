@@ -2,6 +2,7 @@
 partition=$1
 bin=$2  # path to osu_nccl_allreduce
 output=$3
+commtype=$4
 
 mkdir -p logs
 
@@ -20,8 +21,8 @@ function run_one()
 
     num=`expr $num \* 4`
     echo "num: $num"
-    sh comm_sbatch.sh $ngpu $bin $num > logs/comm_${ngpu}_${num}.out
-    #sbatch -o logs/comm_${ngpu}_${num}.out -p $partition --exclusive --mem=0 -n $ngpu -N $nnode --gres=gpu:$nt_node --ntasks-per-node $nt_node --cpus-per-task 10 --job-name=comm_test comm_sbatch.sh $ngpu $bin $num
+    # sh comm_sbatch.sh $ngpu $bin $num > logs/comm_${ngpu}_${num}.out
+    sbatch -o logs/comm_${ngpu}_${num}.out -p $partition --exclusive --mem=0 -n $ngpu -N $nnode --gres=gpu:$nt_node --ntasks-per-node $nt_node --cpus-per-task 10 --job-name=comm_test comm_sbatch.sh $ngpu $bin $num
     sleep 20s
 }
 
@@ -44,7 +45,7 @@ function wait_task()
 
 function test_iter()
 {
-    for ngpu in 2 4 8
+    for ngpu in 2 4 8 16 32
     do
         for num in 300000 3097600 6553600 16777216 134217700
         do
@@ -53,7 +54,7 @@ function test_iter()
     done
     wait_task
     wait_task
-    python parse_comm_result.py logs $output
+    python parse_comm_result.py logs $output $commtype
     #srun -p $partition -n 1 --cpus-per-task 10 python parse_comm_result.py logs $output
 }
 
