@@ -1,4 +1,4 @@
-# stable-diffusion 推理
+# stable-diffusion 推理（基于TensorRT）
 
 
 ## 准备工作
