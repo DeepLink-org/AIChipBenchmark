@@ -2,16 +2,16 @@
 
 ## 准备工作
 
-- 代码下载：https://github.com/InternLM/InternLM
-- 安装：参考 https://github.com/InternLM/InternLM/blob/main/doc/install.md, 需根据厂商环境进行适配
+- 代码下载：https://github.com/InternLM/InternEvo/tree/v0.2.0
+- 安装：参考 https://github.com/InternLM/InternEvo/blob/v0.2.0/doc/install.md, 需根据厂商环境进行适配
 - 数据集：
   - 预训练：使用内置dummy数据集
-  - 微调：使用Alpaca数据集，数据集处理参考：https://github.com/InternLM/InternLM/blob/main/doc/usage.md
+  - 微调：使用Alpaca数据集，数据集处理参考：https://github.com/InternLM/InternEvo/blob/v0.2.0/doc/usage.md
 - 微调模型权重：https://github.com/InternLM/InternLM/tree/main#model-zoo
 
 ## 配置
 
-InternLM-7B参考配置：https://github.com/InternLM/InternLM/blob/main/configs/7B_sft.py
+InternLM-7B参考配置：https://github.com/InternLM/InternEvo/blob/v0.2.0/configs/7B_sft.py
 
 InternLM-7B 模型部分超参设置如下
 ```python
@@ -59,7 +59,7 @@ parallel = dict(
 
 2. 调增并行策略，需要保持 `global_batch_size`不变。 其中`global_batch_size=micro_bsz * micro_num * 数据并行大小`。`micro_bsz`和`micro_num`可以在配置中进行修改。
 
-参考：https://github.com/InternLM/InternLM/blob/main/doc/usage.md
+参考：https://github.com/InternLM/InternEvo/blob/v0.2.0/doc/usage.md
 
 
 ## 启动及数据采集
