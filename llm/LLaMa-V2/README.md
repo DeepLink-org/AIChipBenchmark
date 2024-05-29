@@ -19,7 +19,7 @@
 
 模型配置文件配置，可以参考config中文件。
   - 性能测试：使用`7B_llama2.py`（32卡）和`70B_llama2.py`（128卡）
-  - 精度测试：使用`train_7B_withdata.py`（8卡）和`train_70B_withdata.py`（32卡）
+  - 精度测试：使用`train_7B_withdata.py`（8卡）和`train_70B_withdata.py`（64卡）
 
 LLAMA2-7B 模型部分超参设置如下
 ```python
@@ -84,25 +84,9 @@ parallel = dict(
 
 ## 启动命令
 
-若在 slurm 上启动分布式运行环境，4机 32 卡的运行命令如下所示：
-
+4机32卡参考命令：
 ```bash
-srun -p internllm -N 4 -n 32 --ntasks-per-node=8 --gpus-per-task=1 python train.py --config ./config/train_70B_withdata.py
-```
-
-单机 8 卡的运行命令如下所示：
-```bash
-srun -p internllm -N 1 -n 8 --ntasks-per-node=8 --gpus-per-task=1 python train.py --config ./config/train_7B_withdata.py
-```
-
-若在 torch 上启动分布式运行环境，单机 8 卡的运行命令如下所示：
-```bash
-torchrun --nnodes=1 --nproc_per_node=8 train.py --config ./config/train_7B_withdata.py --launcher "torch"
-```
-
-4机32卡参考：
-```bash
-torchrun --nnodes=4 --nproc_per_node=8 --node-rank $RANK --master-addr $MASTER_ADDR --master-port $MASTER_PORT  train.py --config ../train_70B_withdata.py  --launcher torch
+torchrun --nnodes=4 --nproc_per_node=8 --node-rank $RANK --master-addr $MASTER_ADDR --master-port $MASTER_PORT  train.py --config ./config/7B_llama2.py  --launcher torch
 ```
 
 
@@ -113,5 +97,5 @@ torchrun --nnodes=4 --nproc_per_node=8 --node-rank $RANK --master-addr $MASTER_A
 ```
 
 ## 训练目标
-1. llama2-7B模型根据参考配置训练后，训练Loss小于1.716
-2. llama2-70B模型根据参考配置训练后，训练Loss小于2.617
+1. `llama2-7B`模型根据参考配置训练后，训练Loss小于`1.716`
+2. `llama2-70B`模型根据参考配置训练后，训练Loss小于`2.617`
