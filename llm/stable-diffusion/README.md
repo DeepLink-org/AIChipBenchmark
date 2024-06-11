@@ -52,7 +52,7 @@ tpu_use_sudo: false
 
 ## 启动及数据采集
 
-启动命令：
+启动命令参考：
 
 ```bash
 #!/bin/sh
@@ -95,10 +95,10 @@ srun -p pat_rd -n4 -N4 --gres=gpu:8 bash sd_train.sh
 关键参数说明：
 - train_batch_size：per device batch size，设置为8
 - gradient_accumulation_steps：梯度累计，设置为4
-- resolution: 分辨率，性能测试时设置为960; 功能测试时设置为256，loss下降较为明显
-- max_train_steps: 性能迭代次数，设置为100，为了消除step波动的影响，`time(s/it)`取100个step的均值
+- resolution: 分辨率，多机多卡在性能测试时设置为960; 功能测试时设置为256，loss下降较为明显。单机8卡下使用默认配置512
+- max_train_steps: 性能迭代次数，设置为100，为了消除step波动的影响，`time(s/it)`取100个step的均值。
 - gradient checkpointing：处于性能考虑，关闭梯度检查点功能
-
+- 模型选择：[参考] (## 训练目标)
 
 性能指标`IPS`计算：
 - dp：基准数据使用单机8卡时，`dp=8`； 使用4机32卡时，`dp=32`
@@ -398,7 +398,8 @@ wandb: Find logs at: ./wandb/offline-run-20240320_203711-3t42745c/logs
 
 ### 功能测试目标
 #### 单机8卡
-stable-diffusion-v1-4 训练 `step =  101` ，Loss小于 `0.0456`。
+stable-diffusion-v1-4 训练 `step =  100` ，Loss小于 `0.0456`。
+
 #### 4机32卡
 stable-diffusion-v1-5 训练 `step > 5000` ，Loss小于 `0.015`。
 stable-diffusion-v2-1 训练 `step > 5000` ，Loss小于 `0.15`。
