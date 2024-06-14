@@ -104,6 +104,9 @@ DATASETCACHE="$PATH_TO/gptcache"
 - flash-attn：出于性能考虑，训练使用flash attenstion v2
 - 并行配置：64卡下，模型并行tp=8，流水线并行pp=8
 
+### batch size说明
+GPT-3 175B预训练的功能和性能指标，采用统一的`batchsize=1536`。
+
 
 ### 性能指标
 启动性能数据脚本：

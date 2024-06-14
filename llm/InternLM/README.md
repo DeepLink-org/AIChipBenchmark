@@ -80,6 +80,23 @@ srun -p internllm -N 1 -n 8 --ntasks-per-node=8 --gpus-per-task=1 python train.p
 torchrun --nnodes=1 --nproc_per_node=8 train.py --config ./configs/7B_sft.py --launcher "torch"
 ```
 
+### batch size说明
+
+- InternLM-7B 微调参考配置`7B_sft_alpaca.py`（8卡参考配置），功能和性能指标，采用统一的`batchsize=512`。
+
+- InternLM-7B 预训练配置功能和性能指标，采用统一的`batchsize=512`。（同样可以参考`7B_sft_alpaca.py`）
+
+- InternLM-65B 预训练参考配置`65B_internlm_large.py`（128卡参考配置），功能和性能指标，采用统一的`batchsize=1024`。
+
+
+说明：
+
+1. 由于InternLM框架并未显式给出`global batchsize`的配置，而是通过`global_batch_size = micro_bsz * micro_num * 数据并行大小`来计算，这一点在进行多卡迁移时需要注意（关注`数据并行大小`项变化）
+2. 如果需要计算global batchsize中的tokens，可以用`batchsize` * `sequence length`
+3. 如果因为厂商硬件限制，可以减小相应的`batchsize`，但是不可以任意增大`batchsize`。
+4. 如果因为厂商硬件限制，可以进行`micro_bsz`和`micro_num`的调整，只需要保持两者乘积和推荐配置保持一致即可。
+
+
 ### 性能指标
 根据训练日志，采集其中性能指标TGS、TFlops、Loss数值
 ```bash

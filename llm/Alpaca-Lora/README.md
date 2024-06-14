@@ -69,11 +69,14 @@ python finetune.py \
 - base_model：表示模型路径
 - data_path：数据集路径
 - output_dir ：输出路径
-- batch_size/micro_batch_size ：批大小，不要修改。
+- batch_size：批大小，不要修改。
+- micro_batch_size：梯度累计，为保持收敛一致，建议和推荐配置保持一致
 - num_epochs ：训练次数，不要修改。
 - cutoff_len ：句子最大长度，这个参数严重影响训练时间与模型性能，不要修改。
 - lora_r：lora的秩，一般取2，4，8，64，不要修改。
 
+### batch size说明
+Alpaca-Lora微调的功能和性能指标，采用统一的batchsize=128。
 
 
 ### 性能指标
