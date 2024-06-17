@@ -67,6 +67,12 @@ NPROC_PER_NODE=8 xtuner train llava_internlm2_chat_20b_clip_vit_large_p14_336_e1
 {"lr": 0.0007260563793103471, "data_time": 0.49270365238189695, "loss": 2.797193455696106, "time": 14.245970010757446, "tflops": 18.356761561585994, "tokens_per_sec": 103.37482784717935, "iter": 380, "memory": 49121, "step": 380}
 ```
 
+
+### 性能指标计算
+- TGS: 为了消除step波动的影响，`tokens_per_sec`取500个step的均值。
+- IPS: `batch_size * dp * steps` / `time of total steps` / `#gpu`，可以取前500个step的时间计算`IPS`。
+
+
 ## 训练目标
 
-以 A100 为基准，能在 500 个 step 内将 loss 降低至 2.3 以内。
+以 A100 为基准，能在 500 - 1000 个 step 内将 loss 降低至 2.3 以内。
