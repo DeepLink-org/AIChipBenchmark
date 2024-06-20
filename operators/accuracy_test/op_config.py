@@ -81,6 +81,31 @@ def gen_bool(shape, grad=False):
     return y
 
 
+def gen_range(start, end, step=1, grad=False):
+    out = torch.range(start, end, step)
+    out.requires_grad = grad
+    return out
+
+
+def gen_arange(start, end, step=1, grad=False):
+    out = torch.arange(start, end, step)
+    out.requires_grad = grad
+    return out
+
+
+def gen_normal(mean, std, grad=False):
+    fix_rand()
+    out = torch.normal(mean, std)
+    out.requires_grad = grad
+    return out
+
+
+def dropout2d(x, p=0.5):
+    module = nn.Dropout2d(p)
+    fix_rand()
+    return module(x)
+
+
 fix_rand()
 
 configs = dict(
@@ -230,6 +255,10 @@ configs = dict(
     median=(torch.median, (2, 3, 100, 100)),
     std=(torch.std, (2, 3, 100, 100), dict(dim=2, unbiased=True)),
     var=(torch.var, (2, 3, 100, 100), dict(dim=2, unbiased=True)),
+    dropout2d=(dropout2d, (20, 16, 32, 32)),
+    normal=(gen_normal, [torch.arange(1., 11.), torch.arange(1, 0, -0.1)]), #两个参数，mean和std
+    range=(torch.range, [], (1, 4, 0.5)),
+    eig=(torch.linalg.eig, torch.randn(3, 2, 2)), 
 )
 
 non_deterministics = [
