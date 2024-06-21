@@ -256,9 +256,9 @@ configs = dict(
     std=(torch.std, (2, 3, 100, 100), dict(dim=2, unbiased=True)),
     var=(torch.var, (2, 3, 100, 100), dict(dim=2, unbiased=True)),
     dropout2d=(dropout2d, (20, 16, 32, 32)),
-    normal=(gen_normal, [torch.arange(1., 11.), torch.arange(1, 0, -0.1)]), #两个参数，mean和std
-    range=(torch.range, [], (1, 4, 0.5)),
-    eig=(torch.linalg.eig, torch.randn(3, 2, 2)), 
+    normal=(gen_normal, [torch.arange(1., 11.), torch.arange(1, 0, -0.1)]),
+    range=(gen_range, [], dict(start=1, end=4, step=0.5)),
+    eig=(torch.linalg.eigvals, (3, 2, 2)), 
 )
 
 non_deterministics = [
