@@ -62,13 +62,13 @@ CUBLAS_WORKSPACE_CONFIG=:4096:8 python cuda_op_validate.py path/to/data path/to/
 
 若验证单个算子的测例, 运行命令:
 ```sh
-python cuda_ground_truth_gen.py your/output/path op_name(e.g. conv)
+python cuda_op_validate.py path/to/data your/output/path op_name(e.g. conv)
 ```
 此时不会生成csv文件
 
 若验证conv算子的全部测例, 运行命令:
 ```sh
-python cuda_ground_truth_gen.py your/output/path CONV
+python cuda_op_validate.py path/to/data your/output/path CONV
 ```
 
 ## logger环境变量
