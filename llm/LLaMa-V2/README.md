@@ -92,7 +92,7 @@ torchrun --nnodes=4 --nproc_per_node=8 --node-rank $RANK --master-addr $MASTER_A
 
 ### batch size说明
 
-- LLAMA2-7B 预训练功能配置参考`train_7B_withdata.py`（64卡参考配置），功能和性能指标，采用统一的`batchsize=256`。
+- LLAMA2-7B 预训练功能配置参考`train_7B_withdata.py`（8卡参考配置），功能和性能指标，采用统一的`batchsize=32`。
 
 - LLAMA2-7B 预训练性能配置参考`7B_llama2.py`（32卡参考配置），功能和性能指标，采用统一的`batchsize=256`。
 
