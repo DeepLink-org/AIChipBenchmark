@@ -641,7 +641,9 @@ def main():
             args.pretrained_model_name_or_path, subfolder="unet", revision=args.revision, variant=args.variant
         )
         ema_unet = EMAModel(ema_unet.parameters(), model_cls=UNet2DConditionModel, model_config=ema_unet.config)
-    args.enable_xformers_memory_efficient_attention = False
+    
+    #args.enable_xformers_memory_efficient_attention = False
+    
     if args.enable_xformers_memory_efficient_attention:
         if is_xformers_available():
             import xformers
