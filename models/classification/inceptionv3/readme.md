@@ -3,6 +3,7 @@ gitlab.bj.sensetime.com/platform/ParrotsDL/parrots.example
 
 e8fe98cd
 
+参考配置：inception.yaml
 
 # env
 
