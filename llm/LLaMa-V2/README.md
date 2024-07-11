@@ -3,8 +3,7 @@
 ## 准备工作
 
 - 代码库：https://github.com/InternLM/InternEvo 
-  - 性能测试参考版本：v0.2.3dev20240201
-  - 精度测试参考版本：v0.3.1dev20240229
+  - 参考版本：v0.2.3dev20240201
 - 安装参考：https://github.com/InternLM/InternEvo/blob/v0.2.3dev20240201/doc/install.md#%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85
 - 数据集：
   - 性能测试：使用dummy
@@ -20,7 +19,7 @@
 
 模型配置文件配置，可以参考config中文件。
   - 性能测试：使用`7B_llama2.py`（32卡）和`70B_llama2.py`（128卡）
-  - 精度测试：使用`train_7B_withdata.py`（8卡）和`train_70B_withdata.py`（64卡）
+  - 精度测试：使用`train_7B_withdata.py`（8卡）和`train_70B_withdata.py`（64卡）（闭源配置，需要根据版本适配）
 
 LLAMA2-7B 模型部分超参设置如下
 ```python

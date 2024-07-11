@@ -32,7 +32,7 @@ NUM_LAYER = 40
 VOCAB_SIZE = 103168
 ```
 
-InternLM-65B 模型可参考配置：`65B_sft.py`。
+InternLM-65B 模型可参考配置：`65B_internlm_large.py`。
 
 InternLM-7B 模型微调的参考配置：`7B_sft_alpaca.py`
 
