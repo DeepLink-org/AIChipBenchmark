@@ -93,11 +93,15 @@ python scripts/inference.py configs/opensora-v1-2/inference/sample.py \
 - time-len：时长
 - image-size: 分辨率
 ```
+吞吐量QPS计算：
+- totalframes: 生成视频总帧数
+- time: 推理耗时
+- QPS = totalframes*1000/time
 
 日志参考：
 ```
-[2024-08-14 16:19:56,070] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
-[2024-08-14 16:20:25] Inference configuration:
+[2024-08-23 10:01:48,998] [INFO] [real_accelerator.py:158:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[[34m2024-08-23 10:01:51[0m] Inference configuration:
  {'aes': 6.5,
  'align': 5,
  'batch_size': 1,
@@ -107,7 +111,7 @@ python scripts/inference.py configs/opensora-v1-2/inference/sample.py \
  'flow': 5,
  'fps': 24,
  'frame_interval': 1,
- 'image_size': [1280, 720],
+ 'image_size': [640, 360],
  'model': {'enable_flash_attn': True,
            'enable_layernorm_kernel': True,
            'from_pretrained': '/mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-STDiT-v3',
@@ -126,18 +130,37 @@ python scripts/inference.py configs/opensora-v1-2/inference/sample.py \
  'text_encoder': {'from_pretrained': '/mnt/lustrenew/share_data/PAT/datasets/huggingface/t5-v1_1-xxl',
                   'model_max_length': 300,
                   'type': 't5'},
- 'time_len': 2,
+ 'time_len': 8,
  'vae': {'from_pretrained': '/mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-VAE-v1.2',
          'micro_batch_size': 4,
          'micro_frame_size': 17,
          'type': 'OpenSoraVAE_V1_2'}}
-[2024-08-14 16:20:25] Building models...
+[[34m2024-08-23 10:01:51[0m] Building models...
+
 Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]/mnt/cachenew/share/platform/env/miniconda3.10/envs/lazyllm2/lib/python3.10/site-packages/torch/_utils.py:831: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
   return self.fget.__get__(instance, owner)()
-Loading checkpoint shards: 100%|██████████| 2/2 [00:59<00:00, 29.98s/it]
-[2024-08-14 16:22:23] Model checkpoint loaded from /mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-VAE-v1.2
-[2024-08-14 16:24:57] Model checkpoint loaded from /mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-STDiT-v3
-100%|██████████| 1/1 [02:12<00:00, 132.90s/it]
-[2024-08-14 16:27:13] Inference finished.
-[2024-08-14 16:27:13] Saved 1 samples to ./samples/samples/
+
+Loading checkpoint shards:  50%|█████     | 1/2 [00:11<00:11, 11.38s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:21<00:00, 10.73s/it]
+Loading checkpoint shards: 100%|██████████| 2/2 [00:21<00:00, 10.83s/it]
+[[34m2024-08-23 10:02:15[0m] Model checkpoint loaded from /mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-VAE-v1.2
+[[34m2024-08-23 10:02:31[0m] Model checkpoint loaded from /mnt/lustrenew/share_data/PAT/datasets/huggingface/OpenSora-STDiT-v3
+
+--------------------------------------------------
+loading model time is: 41.00 s
+--------------------------------------------------
+
+
+  0%|          | 0/1 [00:00<?, ?it/s]
+100%|██████████| 1/1 [02:01<00:00, 121.96s/it]
+100%|██████████| 1/1 [02:01<00:00, 121.96s/it]
+[[34m2024-08-23 10:04:34[0m] Inference finished.
+[[34m2024-08-23 10:04:34[0m] Saved 1 samples to ./samples/samples/
+
+--------------------------------------------------
+inference time is: 121.96 s
+--------------------------------------------------
+
+QPS: 1672.67 frames/s
+Maximum GPU Memory Usage: 28.42 GB
 ```

@@ -32,6 +32,19 @@ from opensora.utils.inference_utils import (
     split_prompt,
 )
 from opensora.utils.misc import all_exists, create_logger, is_distributed, is_main_process, to_torch_dtype
+import pynvml
+
+
+def get_gpu_memory_usage():
+    pynvml.nvmlInit()
+    handle = pynvml.nvmlDeviceGetHandleByIndex(0)  # Assuming you have only one GPU, use index 0
+    # Query GPU memory usage in bytes
+    memory_info = pynvml.nvmlDeviceGetMemoryInfo(handle)
+    used_memory = memory_info.used
+    # Convert bytes to megabytes for a more readable output
+    used_memory_mb = used_memory / (1024 ** 3)
+    pynvml.nvmlShutdown()
+    return used_memory_mb
 
 
 def main():
@@ -71,6 +84,7 @@ def main():
     # ======================================================
     # build model & load weights
     # ======================================================
+    tia = time.time()
     logger.info("Building models...")
     # == build text-encoder and vae ==
     text_encoder = build_module(cfg.text_encoder, MODELS, device=device)
@@ -87,7 +101,7 @@ def main():
         image_size = get_image_size(resolution, aspect_ratio)
     # num_frames = get_num_frames(cfg.num_frames)
     time_len = cfg.get("time_len", None)
-    num_frames = int(time_len/2*3*17)
+    num_frames = int(time_len / 2 * 3 * 17)
 
     # == build diffusion model ==
     input_size = (num_frames, *image_size)
@@ -109,11 +123,15 @@ def main():
 
     # == build scheduler ==
     scheduler = build_module(cfg.scheduler, SCHEDULERS)
+    tib = time.time()
+    print(f'\n{"-" * 50}\nloading model time is: {tib - tia:.2f} s\n{"-" * 50}\n')
 
     # ======================================================
     # inference
     # ======================================================
+    max_memory_usage = 0
     # == load prompts ==
+    tic = time.time()
     prompts = cfg.get("prompt", None)
     start_idx = cfg.get("start_index", 0)
     if prompts is None:
@@ -147,9 +165,9 @@ def main():
     # == Iter over all samples ==
     for i in progress_wrap(range(0, len(prompts), batch_size)):
         # == prepare batch prompts ==
-        batch_prompts = prompts[i : i + batch_size]
-        ms = mask_strategy[i : i + batch_size]
-        refs = reference_path[i : i + batch_size]
+        batch_prompts = prompts[i: i + batch_size]
+        ms = mask_strategy[i: i + batch_size]
+        refs = reference_path[i: i + batch_size]
 
         # == get json from prompts ==
         batch_prompts, refs, ms = extract_json_from_prompts(batch_prompts, refs, ms)
@@ -227,7 +245,7 @@ def main():
                     all_prompts = broadcast_obj_list[0]
                     for num_segment in prompt_segment_length:
                         batched_prompt_segment_list.append(
-                            all_prompts[segment_start_idx : segment_start_idx + num_segment]
+                            all_prompts[segment_start_idx: segment_start_idx + num_segment]
                         )
                         segment_start_idx += num_segment
 
@@ -265,6 +283,10 @@ def main():
                 torch.manual_seed(1024)
                 z = torch.randn(len(batch_prompts), vae.out_channels, *latent_size, device=device, dtype=dtype)
                 masks = apply_mask_strategy(z, refs, ms, loop_i, align=align)
+
+                # Track GPU memory usage before sampling
+                memory_before = get_gpu_memory_usage()
+
                 samples = scheduler.sample(
                     model,
                     text_encoder,
@@ -278,6 +300,10 @@ def main():
                 samples = vae.decode(samples.to(dtype), num_frames=num_frames)
                 video_clips.append(samples)
 
+                # Track GPU memory usage after sampling
+                memory_after = get_gpu_memory_usage()
+                max_memory_usage = max(max_memory_usage, memory_before, memory_after)
+
             # == save samples ==
             if is_main_process():
                 for idx, batch_prompt in enumerate(batch_prompts):
@@ -286,7 +312,7 @@ def main():
                     save_path = save_paths[idx]
                     video = [video_clips[i][idx] for i in range(loop)]
                     for i in range(1, loop):
-                        video[i] = video[i][:, dframe_to_frame(condition_frame_length) :]
+                        video[i] = video[i][:, dframe_to_frame(condition_frame_length):]
                     video = torch.cat(video, dim=1)
                     save_path = save_sample(
                         video,
@@ -298,8 +324,14 @@ def main():
                         time.sleep(1)  # prevent loading previous generated video
                         add_watermark(save_path)
         start_idx += len(batch_prompts)
+
     logger.info("Inference finished.")
     logger.info("Saved %s samples to %s", start_idx, save_dir)
+    tid = time.time()
+    print(f'\n{"-" * 50}\ninference time is: {tid - tic:.2f} s\n{"-" * 50}\n')
+    QPS = num_frames * 1000 / (tid - tic)
+    print(f"QPS: {QPS:.2f} frames/s")
+    print(f"Maximum GPU Memory Usage: {max_memory_usage:.2f} GB")
 
 
 if __name__ == "__main__":
