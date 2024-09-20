@@ -1,0 +1,183 @@
+runtime:
+  seed: &seed 42
+  tensor_model_parallel_size: &tp 4
+  pipeline_model_parallel_size: 2
+  context_parallel_size: 4
+  deepspeed: True
+  lora_mode: False
+  bf16: True
+  dynamic: True
+
+deepspeed:
+  config:
+    gradient_clipping: 1.0
+    zero_optimization:
+      stage: 0
+    bf16:
+      enabled: True
+    fp16:
+      enabled: False
+    steps_per_print: 2000
+    wall_clock_breakdown: False
+  deepspeed_activation_checkpointing: False
+
+tokenizer:
+  type: LlamaTokenizerFast
+  kwargs:
+    tokenizer_name_or_path:  /mnt/wangxing/llama3_tokenizer
+  pad_vocab_size_to: 128256
+
+tokenization: &tokenization
+  type: sense_tokenization
+  kwargs:
+    with_tokenizer: True
+    max_seq_length: &train_seq_length 32768
+    parser_type: preprocess
+
+infer_tokenization:
+  type: sense_tokenization
+  kwargs:
+    max_seq_length: *train_seq_length
+    parser_type: simple_chat
+    parser_kwargs:
+        prompt_template:
+           system_prompt: ""
+           qustion_prompt: "<|User|>:"
+           answer_prompt: "<|Bot|>:"
+
+data:
+  data_types: [train, infer]
+  train:
+    seq_length: *train_seq_length
+    global_batch_size: &train_global_batch_size 256 #256 #270 # 256 864
+    micro_batch_size: &train_micro_batch_size 1
+    dataset:
+      type: base_nlp_json
+      kwargs:
+        json_file: /mnt/wangxing/EasyLLM/alpaca_all.json
+        transformer: [*tokenization]
+        json_type: all
+    batch_sampler:
+      type: megatron_pretrain
+      kwargs:
+        micro_batch_size: *train_micro_batch_size
+        drop_last: True
+    batch_collector:
+      type: batch_align
+      kwargs:
+        alignment: *train_seq_length #8
+        max_seq_length: *train_seq_length
+    data_loader:
+      type: base
+      kwargs:
+        num_workers: 0
+        pin_memory: True
+        seed: *seed
+    batch_pipe:
+          type: flash_batch_pipe
+          kwargs:
+            pretrain: False
+    batch_calculator:
+      type: constant_num
+      kwargs:
+        global_batch_size: *train_global_batch_size
+        micro_batch_size: *train_micro_batch_size
+  infer:
+    seq_length: &infer_seq_length 512
+    global_batch_size: &infer_global_batch_size 256
+    micro_batch_size: &infer_micro_batch_size 1
+    batch_pipe:
+      type: token_batch_pipe
+      kwargs:
+        reset_position_ids: False
+        reset_attention_mask: False
+        eod_mask_loss: False
+        loss_on_targets_only: False
+
+trainer:
+  epoch: 2
+  optimizer:
+    type: AdamW      # apex FusedAdam
+    kwargs:
+      lr: 2.e-5
+      weight_decay: 1.e-2
+      betas: [0.9, 0.95]
+      eps: 1.e-8
+      fused: True
+  lr_scheduler:
+    type: iter_base_annealing
+    kwargs:
+      min_lr: 6.e-6
+      decay_style: cosine
+      lr_warmup_iters: 0
+      use_checkpoint_lr_scheduler: False
+      override_lr_scheduler: False
+
+saver:
+  save_path: &ckpt_path checkpoints/llama_102b_sft
+  save_mode: deepspeed
+  save_interval: 0              # set save_interval to 0 to not save any ckpt.
+  save_tag: latest_ckpt 
+  save_rng_state: True
+  save_zero: True
+  save_optim: True
+
+loader:
+  pretrain_type: internlm2_pack
+  load_rng_state: True
+  load_optim: True
+  # #### from scratch ######
+  load_path:  llama-102b
+  load_mode: huggingface
+  load_zero: False
+  #### for resume ######
+  # load_path: *ckpt_path
+  # load_mode: deepspeed
+  # load_base_state: True
+  # load_zero: True
+  ##### for debug ######
+  # debug: True
+  debug: False
+
+
+hooks:
+  - type: train_val_logger
+    kwargs:
+      log_interval: 1
+      report_memory_interval: 100
+      log_dir: tf_logs/llama-102b
+      tensorboard: True
+
+lora:
+  lora_rank: 8
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: ['q_proj', 'v_proj', 'k_proj', 'o_proj', 'gate_proj', 'down_proj', 'up_proj']
+  saver:
+    modules_to_save: ['word_embeddings', 'lm_head']
+    only_save_trainable: True
+    save_path: checkpoints/lora
+    save_mode: deepspeed
+
+model:
+  type: llama2_7b
+  kwargs:
+     hidden_size: 4096
+     num_attention_heads: 32
+     intermediate_size: 14336
+     num_kv_attention_heads: 8
+     use_flash_attn: True
+     sequence_parallel: True
+     pp_partition_method: parameters
+     transformer_layer_params:
+        position_embedding_kwargs:
+           base: 1000000
+        qkv_pack: True
+     dynamic_checkpoint:
+        enabled: True
+        size_map:
+            512: 0
+            1024: 0
+            2048: 0
+            4096: 0
+            8192: 0
