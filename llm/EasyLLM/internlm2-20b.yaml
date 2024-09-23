@@ -1,8 +1,8 @@
 runtime:
   seed: &seed 42
-  tensor_model_parallel_size: &tp 4
-  pipeline_model_parallel_size: 2
-  context_parallel_size: 4
+  tensor_model_parallel_size: &tp 8
+  pipeline_model_parallel_size: 4
+  context_parallel_size: 1
   deepspeed: True
   lora_mode: False
   bf16: True

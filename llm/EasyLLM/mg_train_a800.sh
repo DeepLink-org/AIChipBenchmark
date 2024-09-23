@@ -4,7 +4,6 @@ export ACCELERATOR_BACKEND=CUDA
 export NCCL_DEBUG=WARN
 
 ROOT=/mnt/kongbohua/workspace/EasyLLM
-DS=/mnt/wangxing/DeepSpeed
 export PYTHONPATH=$ROOT/DeepSpeed:$PYTHONPATH
 export PYTHONPATH=/mnt/wangxing/transformers/src:$PYTHONPATH
 export PYTHONPATH=$ROOT/llm/models:$ROOT:$ROOT/llm/utils/tools:$PYTHONPATH
