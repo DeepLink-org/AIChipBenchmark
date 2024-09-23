@@ -3,7 +3,7 @@
 ## 准备工作
 
 - 代码下载：https://github.com/OpenGVLab/InternVL/tree/main commit 764fdc9f3ee102bc6c2def02c2d0ca1e94336d06 (HEAD -> main, origin/main, origin/HEAD)
-- 数据集：https://drive.google.com/file/d/1dqqa3MnrxMXaU_K9JA6C83je32ibwdOY/view
+- 数据集：ai2d_train_12k https://drive.google.com/file/d/1dqqa3MnrxMXaU_K9JA6C83je32ibwdOY/view
 - 模型权重：
   - vision模型：https://huggingface.co/OpenGVLab/InternViT-6B-448px-V1-5 
   - llm模型：https://huggingface.co/internlm/internlm2-chat-20b
