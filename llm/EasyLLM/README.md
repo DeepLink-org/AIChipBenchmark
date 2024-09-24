@@ -84,3 +84,8 @@ srun -p internllm -N 4 -n 32 --ntasks-per-node=8 --gpus-per-task=1 bash mg_train
 Llama3-8b
 srun -p internllm -N 4 -n 32 --ntasks-per-node=8 --gpus-per-task=1 bash mg_train_a800.sh llama_8b_sft
 ```
+
+## 性能指标
+```bash
+根据训练日志，采集其中性能指标TGS、TFlops、Loss数值
+tgs = train_samples_per_second * seq_len / gpu # 为了消除step波动的影响，取至少15个step的train_samples_per_second均值.
