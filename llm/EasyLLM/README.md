@@ -8,7 +8,8 @@
 - 镜像：
   nvcr.io/nvidia/pytorch:23.12-py3，如需开启context parallel，该镜像是最低所需版本，包含必要的transformer engine，并支持flash attn2
 - 依赖：hjson== 3.1.0，peft== 0.12.0，py-cpuinfo==9.0.0，regex== 2024.7.24，sentencepiece== 0.2.0
-  tensorboardx== 2.6.2.2, tiktoken== 0.7.0, tokenizers== 0.19.1, tqdm== 4.66.5, safetensors==0.4.3, huggingface-hub==0.23.1
+  tensorboardx== 2.6.2.2, tiktoken== 0.7.0, tokenizers== 0.19.1, tqdm== 4.66.5, safetensors==0.4.3, huggingface-hub==0.23.1,
+  deepspeed： 使用mtc_release分支（添加到python路径即可）
 - 数据集：
   - 微调：使用Alpaca数据集：[alpaca_all](alpaca_all.json)
 
@@ -88,4 +89,4 @@ srun -p internllm -N 4 -n 32 --ntasks-per-node=8 --gpus-per-task=1 bash mg_train
 ## 性能指标
 ```bash
 根据训练日志，采集其中性能指标TGS、TFlops、Loss数值
-tgs = train_samples_per_second * seq_len / gpu # 为了消除step波动的影响，取至少15个step的train_samples_per_second均值.
+tgs = consumed tokens / elapsed time per iteration / gpu # 为了消除step波动的影响，取至少15个step的elapsed time per iteration均值.
