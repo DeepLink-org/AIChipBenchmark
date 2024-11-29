@@ -58,10 +58,10 @@ data:
         transformer: [*tokenization]
         json_type: all
     batch_sampler:
-      type: megatron_pretrain
+      type: megatron_pretrain_random
       kwargs:
         micro_batch_size: *train_micro_batch_size
-        drop_last: True
+        # drop_last: True
     batch_collector:
       type: batch_align
       kwargs:
