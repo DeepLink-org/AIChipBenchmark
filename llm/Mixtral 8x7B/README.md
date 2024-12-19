@@ -7,6 +7,12 @@
 2. 将修改的配置文件，移动到当前目录下，准备微调。
 注意：配置文件进行了`per_device batchsize`、`ThroughputHook`、`logging interval`的修改，注意按需适配。
 
+
+
+## 替换throughput_hook.py
+由于xtuner不支持整个`optimizer step`的`TGS`计算（参考：https://github.com/InternLM/xtuner/issues/967）,如果开启了`gradient accumulation`（即accumulative_counts不等于1），需要用提供的`throughput_hook.py`替换`xtuner/engine/hooks/throughput_hook.py`。
+
+
 ## 开始微调
 
 使用 XTuner 启动预训练。
