@@ -5,9 +5,9 @@ import csv
 import os
 
 # 测试配置
-URL = "http://10.100.22.8:8222/v1/completions"
+URL = "http://hostip:port/v1/completions"
 WORKER = 1
-MODEL_PATH = "/data_share/model/DeepSeek-R1-INT8-MLU"
+MODEL_PATH = "/data_share/model/DeepSeek-R1"
 INPUT_NUM = 50
 
 # 要测试的输入和输出长度组合
