@@ -71,3 +71,6 @@ pip install -e '.[all]'
 2025/02/09 07:49:32 - mmengine - INFO - Iter(train) [ 8859/96000]  lr: 9.7914e-06  eta: 18 days, 16:13:38  time: 16.1764  data_time: 0.0440  memory: 54047  loss: 0.0010  tflops: 34.3366  tokens_per_sec: 1012.8326
 2025/02/09 07:49:48 - mmengine - INFO - Iter(train) [ 8860/96000]  lr: 9.7913e-06  eta: 18 days, 16:12:58  time: 16.3557  data_time: 0.0441  memory: 54047  loss: 0.0017  tflops: 33.9602  tokens_per_sec: 1001.7315
 ```
+
+## 4. 性能指标
+基于上述模型和数据集，在A100 8卡的环境下，在不低于2000iter的迭代次数，收敛到loss<0.0013
