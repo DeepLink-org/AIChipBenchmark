@@ -28,19 +28,7 @@ def get_random_input_data(input_len, input_num, tokenizer_path):
 
 
 def get_output_length(input_num, output_len):
-    min_len, max_len = 2, output_len * 2
-    mean = (min_len + max_len) * 0.5
-    std = mean #(max_len - mean) / 3.0 # 3std准则
-    output_lens = []
-    for _ in range(input_num):
-        cur_len = random.gauss(mean, std)
-        cur_len = round(cur_len)
-        if cur_len < min_len:
-            cur_len = min_len
-        elif cur_len > max_len:
-            cur_len = max_len
-        output_lens.append(cur_len)
-    return output_lens 
+    return [output_len] * input_num
 
 
 def post_data_decorator(func, request_gen):
@@ -188,7 +176,7 @@ if __name__ == "__main__":
 
     main(args)
 
-# python3 llm_profile.py \
+# python3 llm_profiler.py \
 #     --url ${URL} \
 #     --num_clients ${WORKER} \
 #     --tokenizer_path ${MODEL_PATH} \
