@@ -329,7 +329,7 @@ def main():
     logger.info("Saved %s samples to %s", start_idx, save_dir)
     tid = time.time()
     print(f'\n{"-" * 50}\ninference time is: {tid - tic:.2f} s\n{"-" * 50}\n')
-    QPS = num_frames * 1000 / (tid - tic)
+    QPS = num_frames / (tid - tic)
     print(f"QPS: {QPS:.2f} frames/s")
     print(f"Maximum GPU Memory Usage: {max_memory_usage:.2f} GB")
 

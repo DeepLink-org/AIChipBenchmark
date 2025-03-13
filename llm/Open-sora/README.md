@@ -96,7 +96,7 @@ python scripts/inference.py configs/opensora-v1-2/inference/sample.py \
 吞吐量QPS计算：
 - totalframes: 生成视频总帧数
 - time: 推理耗时
-- QPS = totalframes*1000/time
+- QPS = totalframes/time
 
 日志参考：
 ```
@@ -161,6 +161,6 @@ loading model time is: 41.00 s
 inference time is: 121.96 s
 --------------------------------------------------
 
-QPS: 1672.67 frames/s
+QPS: 1.67 frames/s
 Maximum GPU Memory Usage: 28.42 GB
 ```
