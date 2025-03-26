@@ -57,6 +57,7 @@ sequence_parallel_size = 2
 batch_size = 1  # per_device
 accumulative_counts = 1 * sequence_parallel_size
 dataloader_num_workers = 4
+global batch size = batch_size * gpu_nums / sequence_parallel_size
 ```
 ## 2. Train
 训练/微调采用Xtuner框架进行，训练脚本及config文件如上所述
@@ -68,10 +69,10 @@ pip install -e '.[all]'
 ```
 
 ### 启动训练/微调
+本节使用了8卡进行训练，并且在前述模型配置文件中开启了sequence parallel，并行度指定为2,global batch size也因此为4
 ```
  NPROC_PER_NODE=${GPU_NUM} xtuner train deepseek_v2_lite_chat_full_alpaca_e3_32k_varlen --deepspeed deepspeed_zero2 
  #deepspeed选项中的模型并行策略，可通过修改其参数指定配置文件，配置文件位于xtuner/xtuner/configs/deepspeed下
- #并且前述模型配置文件中开启了sequence parallel，并行度指定为2
 ```
 ## 3. Log
 启动训练后，可在终端中看到如下日志，其中loss为训练损失，tokens_per_sec为性能指标，日志位于xtuner/work_dirs/deepseek_v2_lite_chat_full_alpaca_e3_32k_varlen/{time_you_run_it}下
