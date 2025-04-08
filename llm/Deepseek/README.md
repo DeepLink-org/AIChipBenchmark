@@ -40,7 +40,8 @@ input_lengths = [256, 512]
 output_lengths = [128, 512, 1024, 2048, 4096, 8192]
 ```
 ## step 4 Result
-从日志中选取 `Output Throughput: 172.6589935410431 token/s` 作为TPS性能结果。
+从日志中选取 `Output Throughput: 172.6589935410431 token/s` 作为TPS性能结果，首字取`first_token_time_P50`指标。
+
 
 # Deepseek 训练
 ## 1. Model & Datasets
