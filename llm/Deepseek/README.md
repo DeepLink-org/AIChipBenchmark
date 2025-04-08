@@ -57,7 +57,7 @@ sequence_parallel_size = 2
 batch_size = 1  # per_device
 accumulative_counts = 1 * sequence_parallel_size
 dataloader_num_workers = 4
-global batch size = batch_size * gpu_nums / sequence_parallel_size
+global batch size = batch_size * accumulative_counts * gpu_nums / sequence_parallel_size
 ```
 ## 2. Train
 训练/微调采用Xtuner框架进行，训练脚本及config文件如上所述
@@ -68,8 +68,12 @@ cd xtuner
 pip install -e '.[all]'
 ```
 
+### 替换throughput_hook.py
+由于xtuner不支持整个`optimizer step`的`TGS`计算(参考：https://github.com/InternLM/xtuner/issues/967), 如果开启了`gradient accumulation`（即accumulative_counts不等于1），需要用提供的`throughput_hook.py`替换`xtuner/engine/hooks/throughput_hook.py`。
+
+
 ### 启动训练/微调
-本节使用了8卡进行训练，并且在前述模型配置文件中开启了sequence parallel，并行度指定为2,global batch size也因此为4
+本节使用了8卡进行训练，并且在前述模型配置文件中开启了sequence parallel，并行度指定为2, 且accumulative_counts = 2，则global batch size = 8
 ```
  NPROC_PER_NODE=${GPU_NUM} xtuner train deepseek_v2_lite_chat_full_alpaca_e3_32k_varlen --deepspeed deepspeed_zero2 
  #deepspeed选项中的模型并行策略，可通过修改其参数指定配置文件，配置文件位于xtuner/xtuner/configs/deepspeed下
