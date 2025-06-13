@@ -86,7 +86,7 @@
   <img src="pipeline.png" width="90%"/>
 </div>
 
-1. 季度测评开始前，联系硬件测评工作人员(或邮件联系\"deeplink_benchmark@pjlab.org.cn\")，确认参与本季度测评。
+1. 季度测评开始前，联系硬件测评工作人员(或邮件联系\"deeplink@pjlab.org.cn\")，确认参与本季度测评。
 2. 季度测评开始，基于实施方案对自家芯片进行测试，并进行数据汇总。
 3. 相关链接可见：
     * [评测仓库&数据下载](https://github.com/DeepLink-org/AIChipBenchmark)。
@@ -95,4 +95,4 @@
 6. 厂商可对评测数据进行反馈。
 
 ## 联系方式
-如果您所代表的硬件厂商有意向参与硬件测评，或您有相关建议和反馈，有欢迎与我们联系：deeplink_benchmark@pjlab.org.cn。
+如果您所代表的硬件厂商有意向参与硬件测评，或您有相关建议和反馈，有欢迎与我们联系：deeplink@pjlab.org.cn。
