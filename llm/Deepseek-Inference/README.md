@@ -1,6 +1,6 @@
 # Deepseek 推理
 ## step 1 Model
-下载模型，DeepSeek-R1	671B 模型位于huggingface中，model_path:[deepseek-ai/DeepSeek-R1](https://hf-mirror.com/deepseek-ai/DeepSeek-R1)
+下载模型，DeepSeek-R1 671B 模型位于huggingface中，model_path:[deepseek-ai/DeepSeek-R1](https://hf-mirror.com/deepseek-ai/DeepSeek-R1)
 
 
 ## step 2 Inference Server
@@ -95,13 +95,14 @@ dataset_path="/mnt/139_nvme2/dongkaixing/lmdeploy/dataset/ShareGPT_V3_unfiltered
                 --seed 42 2>&1 | tee ${current_date}/speed_in${input_len}_out${out_len}_n${no_prompts}_dsv3.log
 ```
 
-数据集统一采用`ShareGPT_V3_unfiltered_cleaned_split.json`，保持`random-range-ratio`和`seed`一致。其余参数可自行调整，以发挥推理引擎的最佳性能。
+数据集统一采用`ShareGPT_V3_unfiltered_cleaned_split.json`，保持`random-range-ratio`和`seed`一致。其余参数可自行调整，以发挥推理引擎和芯片的最佳性能。
+
+基准`Benchmark`的详细输出日志可联系`Deeplink`评测团队获取。
 
 
 ## step 4 Result
 
-根据下面参考日志输出，吞吐取`Output token throughput (tok/s)`。
-
+本项评测关注Deepseek推理中的高吞吐场景，根据下面参考日志输出，吞吐取`Output token throughput (tok/s)`。
 
 ```
 ============ Serving Benchmark Result ============
@@ -134,5 +135,6 @@ Max ITL (ms):                            3469.54
 ==================================================
 
 ```
+### 基准日志
 
 
