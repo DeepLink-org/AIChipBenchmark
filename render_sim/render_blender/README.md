@@ -47,3 +47,15 @@ pip install -r /path/to/compare_script/requirements.txt
 python /path/to/compare_script/main.py /path/to/baseline_image/monster.png  /path/to/render_image/monster2.png
 ```
 
+输出示例：
+```
+===== 渲染图像质量对比结果 =====
+总像素数: 1048576
+差异像素数: 2619
+差异比例: 0.2498%
+平均差异强度 (0-255): 0.00
+MSE: 0.0037  （越小越好）
+PSNR: 72.40 dB  （越大越好）
+SSIM: 1.0000  （越接近1越好）
+差异图已保存为: ./render_diff.png
+```
