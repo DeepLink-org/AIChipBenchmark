@@ -8,8 +8,8 @@
     - [monster](https://ftp.nluug.nl/pub/graphics/blender/release/BlenderBenchmark2.0/scenes/monster.tar.bz2)
     - [classroom](https://ftp.nluug.nl/pub/graphics/blender/release/-BlenderBenchmark2.0/scenes/classroom.tar.bz2)
     - [junkshop](https://ftp.nluug.nl/pub/graphics/blender/release/BlenderBenchmark2.0/scenes/junkshop.tar.bz2)
-- 推理测试脚本：[blender_benchmark_script](render_sim/render_blender/blender_benchmark_script)（可根据厂商适配）
-- 精度对比脚本：[compare_script](render_sim/render_blender/compare_script)
+- 推理测试脚本：[blender_benchmark_script](blender_benchmark_script)（可根据厂商适配）
+- 精度对比脚本：[compare_script](compare_script)
 
 
 ## 暖身轮
@@ -40,7 +40,7 @@
 
 ## 结果评估
 
-在测试中指定`--output`可输出图片，可以将渲染的图片与[基准图片](render_sim/render_blender/compare_script/baseline_image)进行对比，计算像素级差异、PSNR等指标。对比命令参考：
+在测试中指定`--output`可输出图片，可以将渲染的图片与[基准图片](compare_script/baseline_image)进行对比，计算像素级差异、PSNR等指标。对比命令参考：
 ```bash
 pip install -r /path/to/compare_script/requirements.txt
 
