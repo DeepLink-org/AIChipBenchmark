@@ -2,15 +2,12 @@
 
 ## 准备工作
 
-- 代码下载：git clone https://github.com/NVIDIA-NeMo/NeMo.git (00c73da92633f49c9abda6911433aac217d33da5)
-- 环境依赖：`torch==2.8.0a0+5228986c39.nv25.6`, `flash-attn==2.7.4.post1`, `megatron-core==0.14.0rc8`等。
-
-   可以直接拉取镜像：nvcr.io/nvidia/nemo:25.09.00 。
+拉取NeMo开源镜像：nvcr.io/nvidia/nemo:25.09.00 。
 - 数据集：
     - 预训练：使用内置dummy数据集
 
 ## 配置文件
-- 模型配置文件配置，可以参考./NeMo/nemo/collections/llm/recipes文件
+- 模型配置文件配置，可以参考 https://github.com/NVIDIA-NeMo/NeMo/tree/main?tab=readme-ov-file 中 ./NeMo/nemo/collections/llm/recipes 文件
 - 性能测试：`nemotron_pretraining_qwen3_8b.py`(8卡)、`nemotron_pretraining_qwen3_30b_a3b.py`(8卡)和`nemotron_pretraining_qwen25_72b.py`(32卡)
 
 Qwen3-8B模型部分超参设置如下：
