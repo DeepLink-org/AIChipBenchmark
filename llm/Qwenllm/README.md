@@ -4,7 +4,24 @@
 
 拉取NeMo开源镜像：nvcr.io/nvidia/nemo:25.09.00 。
 - 数据集：
-    - 预训练：使用内置dummy数据集
+    - 预训练：使用[arxiv_sample.jsonl](https://huggingface.co/datasets/togethercomputer/RedPajama-Data-1T-Sample/resolve/main/arxiv_sample.jsonl)
+
+## 数据集预处理
+
+```
+python scripts/nlp_language_modeling/preprocess_data_for_megatron.py \
+    --input=arxiv_sample.jsonl \
+    --json-keys=text \
+    --tokenizer-library=huggingface \
+    --tokenizer-type=models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218 \
+    --output-prefix=arxiv_sample \
+    --workers=48
+```
+参数说明：
+- input：输入json文件
+- tokenizer-type：huggingface模型名或者本地位置
+
+如需预处理后的数据集，可联系`Deeplink`团队获取。
 
 ## 配置文件
 - 模型配置文件配置，可以参考 https://github.com/NVIDIA-NeMo/NeMo/tree/main?tab=readme-ov-file 中 ./NeMo/nemo/collections/llm/recipes 文件
@@ -83,11 +100,5 @@ python ./nemotron_pretraining_qwen3_8b.py
 ```
 
 ## 训练目标
-根据参考配置训练后，训练到第`2400`个step时，Loss小于`9.01`，且ppl指标小于`8181`。
+根据参考配置训练后，训练到第最后一个step时（即`global_step: 999`），Loss值和基准值loss的差异不超过`5%`。
 
-```bash
- iteration     2400/    8247 | consumed samples:      1864624 | consumed tokens:   3818749952 | elapsed time per iteration (ms): 315879.9 | learning rate: 5.498E-05 | global batch size:  1536 | lm loss: 9.002386E+00 | loss scale: 17179869184.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.863 | tokens per gpu per second (tgs): 155.603 | TFLOPs: 167.35 |
-------------------------------------------------------------------------------------------------
- validation loss at iteration 2400 | lm loss value: 9.009587E+00 | lm loss PPL: 8.181144E+03 | 
-------------------------------------------------------------------------------------------------
-```

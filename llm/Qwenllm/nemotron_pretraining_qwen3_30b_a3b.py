@@ -4,10 +4,35 @@ from nemo.collections import llm
 from nemo.collections.common.tokenizers.huggingface.auto_tokenizer import AutoTokenizer
 from nemo.utils.exp_manager import TimingCallback
 
+import lightning.pytorch as pl
+import torch
+import random
+import numpy as np
+
+def set_seed(seed=42):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
 def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
 
     recipe = llm.qwen3_30b_a3b.pretrain_recipe(num_nodes=nodes, num_gpus_per_node=gpus_per_node)
-    recipe.data.tokenizer = run.Config(AutoTokenizer, "./models--Qwen--Qwen3-30B-A3B/snapshots/ae659febe817e4b3ebd7355f47792725801204c9")
+    data_bak = recipe.data
+    recipe.data=run.Config(
+            PreTrainingDataModule,
+            paths="datasets/processed2/arxiv_sample_text_document",
+            seq_length=data_bak.seq_length,
+            micro_batch_size=data_bak.micro_batch_size,
+            global_batch_size=data_bak.global_batch_size,
+            tokenizer=run.Config(AutoTokenizer, "./models--Qwen--Qwen3-30B-A3B/snapshots/ae659febe817e4b3ebd7355f47792725801204c9"),
+            split='900,50,50',
+            seed=2025,
+    )
     recipe.trainer.callbacks=[run.Config(TimingCallback, log_tokens_per_sec = True)]
     # recipe.trainer.val_check_interval = 100
     return recipe
@@ -34,4 +59,6 @@ def run_pretraining():
 
 # This condition is necessary for the script to be compatible with Python's multiprocessing module.
 if __name__ == "__main__":
+    pl.seed_everything(2025, workers=True, verbose=True)
+    set_seed(2025)
     run_pretraining()
