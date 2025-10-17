@@ -21,7 +21,10 @@ def set_seed(seed=42):
 
 def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
 
-    recipe = llm.qwen3_30b_a3b.pretrain_recipe(num_nodes=nodes, num_gpus_per_node=gpus_per_node)
+    recipe = llm.qwen3_30b_a3b.pretrain_recipe(num_nodes=nodes, num_gpus_per_node=gpus_per_node,
+                                            warmup_steps=100,
+                                            max_steps=1000,
+                                            val_check_interval=500)
     data_bak = recipe.data
     recipe.data=run.Config(
             PreTrainingDataModule,
