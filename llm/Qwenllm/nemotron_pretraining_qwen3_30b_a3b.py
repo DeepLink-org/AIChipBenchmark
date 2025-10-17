@@ -2,6 +2,7 @@ import nemo_run as run
 
 from nemo.collections import llm
 from nemo.collections.common.tokenizers.huggingface.auto_tokenizer import AutoTokenizer
+from nemo.collections.llm.gpt.data import PreTrainingDataModule
 from nemo.utils.exp_manager import TimingCallback
 
 import lightning.pytorch as pl
