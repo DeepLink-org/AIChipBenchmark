@@ -2,8 +2,10 @@ import nemo_run as run
 
 from nemo.collections import llm
 from nemo.collections.common.tokenizers.huggingface.auto_tokenizer import AutoTokenizer
-from nemo.collections.llm.gpt.data import PreTrainingDataModule
 from nemo.utils.exp_manager import TimingCallback
+from nemo.collections.llm.gpt.data.pre_training import PreTrainingDataModule
+from nemo.lightning.pytorch.callbacks.model_checkpoint import ModelCheckpoint
+
 
 import lightning.pytorch as pl
 import torch
@@ -21,14 +23,14 @@ def set_seed(seed=42):
 
 def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
 
-    recipe = llm.qwen25_72b.pretrain_recipe(num_nodes=nodes, num_gpus_per_node=gpus_per_node,
+    recipe = llm.qwen3_30b_a3b.pretrain_recipe(dir="./NeMo_log3", num_nodes=nodes, num_gpus_per_node=gpus_per_node,
                                             warmup_steps=100,
                                             max_steps=1000,
                                             val_check_interval=500)
     data_bak = recipe.data
     recipe.data=run.Config(
             PreTrainingDataModule,
-            paths="datasets/processed2/arxiv_sample_text_document",
+            paths="./datasets/processed2/arxiv_sample_text_document",
             seq_length=data_bak.seq_length,
             micro_batch_size=data_bak.micro_batch_size,
             global_batch_size=data_bak.global_batch_size,
@@ -36,7 +38,12 @@ def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
             split='900,50,50',
             seed=2025,
     )
-    recipe.trainer.callbacks=[run.Config(TimingCallback, log_tokens_per_sec = True)]
+    recipe.trainer.callbacks=[run.Config(TimingCallback, log_tokens_per_sec = True), run.Config(ModelCheckpoint,
+        every_n_train_steps=500,   
+        save_last=True,          
+        save_top_k=1,            
+        monitor="val_loss",
+        mode="min")]
     # recipe.trainer.val_check_interval = 100
     return recipe
 

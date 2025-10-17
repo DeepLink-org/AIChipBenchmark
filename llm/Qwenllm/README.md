@@ -90,15 +90,10 @@ python ./nemotron_pretraining_qwen3_8b.py
 
 根据训练日志，采集其中Loss数值和相关性能指标。
 ```bash
- iteration        5/      10 | consumed samples:         7680 | consumed tokens:     15728640 | elapsed time per iteration (ms): 344656.1 | learning rate: 2.270E-05 | global batch size:  1536 | lm loss: 1.100078E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.457 | tokens per gpu per second (tgs): 142.612 | TFLOPs: 153.38 |
- iteration        6/      10 | consumed samples:         9216 | consumed tokens:     18874368 | elapsed time per iteration (ms): 347319.2 | learning rate: 1.392E-05 | global batch size:  1536 | lm loss: 1.100214E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.422 | tokens per gpu per second (tgs): 141.518 | TFLOPs: 152.20 |
- iteration        7/      10 | consumed samples:        10752 | consumed tokens:     22020096 | elapsed time per iteration (ms): 345333.7 | learning rate: 8.059E-06 | global batch size:  1536 | lm loss: 1.100195E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.448 | tokens per gpu per second (tgs): 142.332 | TFLOPs: 153.08 |
- iteration        8/      10 | consumed samples:        12288 | consumed tokens:     25165824 | elapsed time per iteration (ms): 346430.5 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.100105E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.434 | tokens per gpu per second (tgs): 141.881 | TFLOPs: 152.59 |
- iteration        9/      10 | consumed samples:        13824 | consumed tokens:     28311552 | elapsed time per iteration (ms): 347071.6 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.100164E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.426 | tokens per gpu per second (tgs): 141.619 | TFLOPs: 152.31 |
- iteration       10/      10 | consumed samples:        15360 | consumed tokens:     31457280 | elapsed time per iteration (ms): 344835.7 | learning rate: 6.000E-06 | global batch size:  1536 | lm loss: 1.099972E+01 | loss scale: 4294967296.0 | grad norm: 0.000 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.454 | tokens per gpu per second (tgs): 142.537 | TFLOPs: 153.30 |
-
+2025-10-17T11:32:59+08:00] Training epoch 0, iteration 527/999 | lr: 0.0001758 | global_batch_size: 32 | global_step: 527 | reduced_train_loss: 2.792 | train_step_timing in s: 2.389 | tokens_per_sec_per_gpu: 6.859e+03 | consumed_samples: 16896 | val_loss: 3.624
+[2025-10-17T11:33:02+08:00] Training epoch 0, iteration 528/999 | lr: 0.0001754 | global_batch_size: 32 | global_step: 528 | reduced_train_loss: 3.06 | train_step_timing in s: 2.443 | tokens_per_sec_per_gpu: 6.706e+03 | consumed_samples: 16928 | val_loss: 3.624
+[2025-10-17T11:33:04+08:00] Training epoch 0, iteration 529/999 | lr: 0.0001749 | global_batch_size: 32 | global_step: 529 | reduced_train_loss: 3.221 | train_step_timing in s: 2.127 | tokens_per_sec_per_gpu: 7.702e+03 | consumed_samples: 16960 | val_loss: 3.624
 ```
 
 ## 训练目标
 根据参考配置训练后，训练到第最后一个step时（即`global_step: 999`），Loss值和基准值loss的差异不超过`5%`。
-
