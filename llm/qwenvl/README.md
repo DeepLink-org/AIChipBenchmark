@@ -78,7 +78,7 @@ bash run_mcore_qwen.sh  \
 dsw  \                               # 运行环境配置开关: dsw单机训练训练，dlc表示多机训练环境
 7B   \                               # 模型结构参数量级: 3B/7B/72B
 1    \                               # 一次迭代一个数据并行内的样本数
-64 \                                 # 一次迭代一个数据并行内的样本数
+64 \                                 # GLOBAL_BATCH_SIZE
 1e-5   \                             # 学习率
 1e-6   \                             # 最小学习率
 8196  \                              # 序列长度
@@ -96,7 +96,7 @@ false \                              # 是否启用Offload optimizer: false, 或
 ./LLaVA-Pretrain/wds   \             # 训练数据集路径
 ./LLaVA-Pretrain/wds   \             # 验证数据集路径
 ./Qwen2.5VL-7B-Instruct-to-mcore \   # 预训练模型路径
-20000  \                             # Iter数
+1000  \                              # Iter数
 200   \                              # 预热Iter数        
 ./output_mcore_qwen2_5_vl_pretrain   # 训练输出日志文件路径
 ```
@@ -105,7 +105,10 @@ false \                              # 是否启用Offload optimizer: false, 或
 
 根据训练日志，采集其中Loss数值和相关性能指标。
 ```bash
-[2025-10-16 08:38:12] iteration        2/   20000 | consumed samples:          128 | elapsed time per iteration (ms): 6164.0 | throughput per GPU (TFLOP/s/GPU): 503.7 | learning rate: 1.000000E-07 | global batch size:    64 | lm loss: 6.919307E+00 | loss scale: 1.0 | grad norm: 120.409 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-16 08:38:18] iteration        3/   20000 | consumed samples:          192 | elapsed time per iteration (ms): 6171.4 | throughput per GPU (TFLOP/s/GPU): 503.1 | learning rate: 1.500000E-07 | global batch size:    64 | lm loss: 6.871262E+00 | loss scale: 1.0 | grad norm: 242.298 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-16 08:38:24] iteration        4/   20000 | consumed samples:          256 | elapsed time per iteration (ms): 6213.2 | throughput per GPU (TFLOP/s/GPU): 499.8 | learning rate: 2.000000E-07 | global batch size:    64 | lm loss: 6.884488E+00 | loss scale: 1.0 | grad norm: 175.319 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-16 08:38:30] iteration        5/   20000 | consumed samples:          320 | elapsed time per iteration (ms): 6148.0 | throughput per GPU (TFLOP/s/GPU): 505.1 | learning rate: 2.500000E-07 | global batch size:    64 | lm loss: 6.948066E+00 | loss scale: 1.0 | grad norm: 186.873 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-21T16:18:53+08:00] iteration       51/   20000 | consumed samples:         3264 | elapsed time per iteration (ms): 6049.0 | throughput per GPU (TFLOP/s/GPU): 513.3 | learning rate: 2.550000E-06 | global batch size:    64 | lm loss: 1.959154E+00 | loss scale: 1.0 | grad norm: 30.855 | tokens/sec/gpu: 10839.5 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-21T16:18:59+08:00] iteration       52/   20000 | consumed samples:         3328 | elapsed time per iteration (ms): 6042.6 | throughput per GPU (TFLOP/s/GPU): 513.9 | learning rate: 2.600000E-06 | global batch size:    64 | lm loss: 1.930008E+00 | loss scale: 1.0 | grad norm: 21.275 | tokens/sec/gpu: 10851.0 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-21T16:19:06+08:00] iteration       53/   20000 | consumed samples:         3392 | elapsed time per iteration (ms): 6069.5 | throughput per GPU (TFLOP/s/GPU): 511.6 | learning rate: 2.650000E-06 | global batch size:    64 | lm loss: 2.005936E+00 | loss scale: 1.0 | grad norm: 16.153 | tokens/sec/gpu: 10802.9 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-21T16:19:12+08:00] iteration       54/   20000 | consumed samples:         3456 | elapsed time per iteration (ms): 6050.1 | throughput per GPU (TFLOP/s/GPU): 513.2 | learning rate: 2.700000E-06 | global batch size:    64 | lm loss: 1.869226E+00 | loss scale: 1.0 | grad norm: 19.812 | tokens/sec/gpu: 10837.4 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-21T16:19:18+08:00] iteration       55/   20000 | consumed samples:         3520 | elapsed time per iteration (ms): 6098.0 | throughput per GPU (TFLOP/s/GPU): 509.2 | learning rate: 2.750000E-06 | global batch size:    64 | lm loss: 1.806897E+00 | loss scale: 1.0 | grad norm: 22.779 | tokens/sec/gpu: 10752.3 | number of skipped iterations:   0 | number of nan iterations:   0 |
+```
+根据参考配置训练后，训练到第最后一个Iter时（即iteration: 1000），Loss值和基准值loss的差异不超过5%。
