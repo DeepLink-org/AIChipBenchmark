@@ -6,7 +6,7 @@
 - 下载 [blender](https://www.blender.org/download) （可根据厂商适配）
 - 下载场景文件：
     - [monster](https://ftp.nluug.nl/pub/graphics/blender/release/BlenderBenchmark2.0/scenes/monster.tar.bz2)
-    - [classroom](https://ftp.nluug.nl/pub/graphics/blender/release/-BlenderBenchmark2.0/scenes/classroom.tar.bz2)
+    - [classroom](https://ftp.nluug.nl/pub/graphics/blender/release/BlenderBenchmark2.0/scenes/classroom.tar.bz2)
     - [junkshop](https://ftp.nluug.nl/pub/graphics/blender/release/BlenderBenchmark2.0/scenes/junkshop.tar.bz2)
 - 推理测试脚本：[blender_benchmark_script](blender_benchmark_script)（可根据厂商适配）
 - 精度对比脚本：[compare_script](compare_script)
