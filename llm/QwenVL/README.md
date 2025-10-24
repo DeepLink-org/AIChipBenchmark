@@ -20,7 +20,7 @@ unzip images.zip
 处理命令如下：
 ```bash
 #convert to webdataset format:
-cd /workspace/Pai-Megatron-Patch/toolkits/pretrain_data_preprocessing
+cd /workspace/Pai-Megatron-Patch/toolkits/multimodal_data_preprocessing
 python convert_llava_pretrain_to_wds.py /mnt/llava-datasets/LLaVA-Pretrain/
 
 #convert to megatron-energon format:
@@ -69,6 +69,10 @@ USE_CUDA=$5                 # 是否使用GPU转换 建议: true
 PR=$6                       # 转换精度 可选: fp32 bf16 fp16
 HF_DIR=$7                   # HF权重路径(mcore2hf时必须提供)
 ```
+## Megatron-Core预训练
+
+> 关于attention: Qwen2.5-VL调用了varlen attention，若您使用Hopper架构GPU，推荐将FL设为false以使用FusedAttention后端来获得最佳性能； 对于其他NVIDIA GPU，由于FusedAttention不支持varlen，请将FL设置为true。此外，目前观察到Flash-Attention 3会出现不正常的grad norm，不推荐使用。
+
 ## 启动及数据采集
 
 启动训练脚本：
@@ -89,15 +93,15 @@ bf16  \                              # 训练精度: fp16, bf16, fp8
 1 \                                  # CP
 true \                               # SP
 true \                               # 是否使用Megatron版Zero-1降显存优化器: true, false
-true   \                             # 是否优先使用Flash Attention: true, false
+false   \                             # 是否优先使用Flash Attention: true, false
 false \                              # 激活检查点模式: sel, full, offload, false
 false \                              # 是否启用Offload optimizer: false, 或输入0～1的小数作为参数offload比例
 100000  \                            # 保存ckpt的间隔
 ./LLaVA-Pretrain/wds   \             # 训练数据集路径
 ./LLaVA-Pretrain/wds   \             # 验证数据集路径
 ./Qwen2.5VL-7B-Instruct-to-mcore \   # 预训练模型路径
-1000  \                              # Iter数
-200   \                              # 预热Iter数        
+500  \                               # Iter数
+100   \                              # 预热Iter数        
 ./output_mcore_qwen2_5_vl_pretrain   # 训练输出日志文件路径
 ```
 替换./Pai-Megatron-Patch/backends/megatron/Megatron-LM-250624/megatron/training/training.py目录下文件用于增加 TGS 指标计算。
@@ -112,10 +116,13 @@ log_string += f' tokens/sec/gpu: {tokens_per_gpu_per_sec:.1f} |'
 
 根据训练日志，采集其中Loss数值和相关性能指标。
 ```bash
-[2025-10-21T16:18:53+08:00] iteration       51/   20000 | consumed samples:         3264 | elapsed time per iteration (ms): 6049.0 | throughput per GPU (TFLOP/s/GPU): 513.3 | learning rate: 2.550000E-06 | global batch size:    64 | lm loss: 1.959154E+00 | loss scale: 1.0 | grad norm: 30.855 | tokens/sec/gpu: 10839.5 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-21T16:18:59+08:00] iteration       52/   20000 | consumed samples:         3328 | elapsed time per iteration (ms): 6042.6 | throughput per GPU (TFLOP/s/GPU): 513.9 | learning rate: 2.600000E-06 | global batch size:    64 | lm loss: 1.930008E+00 | loss scale: 1.0 | grad norm: 21.275 | tokens/sec/gpu: 10851.0 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-21T16:19:06+08:00] iteration       53/   20000 | consumed samples:         3392 | elapsed time per iteration (ms): 6069.5 | throughput per GPU (TFLOP/s/GPU): 511.6 | learning rate: 2.650000E-06 | global batch size:    64 | lm loss: 2.005936E+00 | loss scale: 1.0 | grad norm: 16.153 | tokens/sec/gpu: 10802.9 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-21T16:19:12+08:00] iteration       54/   20000 | consumed samples:         3456 | elapsed time per iteration (ms): 6050.1 | throughput per GPU (TFLOP/s/GPU): 513.2 | learning rate: 2.700000E-06 | global batch size:    64 | lm loss: 1.869226E+00 | loss scale: 1.0 | grad norm: 19.812 | tokens/sec/gpu: 10837.4 | number of skipped iterations:   0 | number of nan iterations:   0 |
-[2025-10-21T16:19:18+08:00] iteration       55/   20000 | consumed samples:         3520 | elapsed time per iteration (ms): 6098.0 | throughput per GPU (TFLOP/s/GPU): 509.2 | learning rate: 2.750000E-06 | global batch size:    64 | lm loss: 1.806897E+00 | loss scale: 1.0 | grad norm: 22.779 | tokens/sec/gpu: 10752.3 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-24 03:56:28] iteration      493/     500 | consumed samples:        31552 | elapsed time per iteration (ms): 5592.9 | throughput per GPU (TFLOP/s/GPU): 555.2 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.612240E+00 | loss scale: 1.0 | grad norm: 11.949 | tokens/sec/gpu: 11723.5 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-24 03:56:33] iteration      494/     500 | consumed samples:        31616 | elapsed time per iteration (ms): 5580.6 | throughput per GPU (TFLOP/s/GPU): 556.4 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.524855E+00 | loss scale: 1.0 | grad norm: 24.849 | tokens/sec/gpu: 11749.3 | number of skipped iterations:   0 | number of nan iterations:   0 |
+[2025-10-24 03:56:39] iteration      495/     500 | consumed samples:        31680 | elapsed time per iteration (ms): 5818.0 | throughput per GPU (TFLOP/s/GPU): 533.7 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.666730E+00 | loss scale: 1.0 | grad norm: 13.959 | tokens/sec/gpu: 11269.9 | number of skipped iterations:   0 | number of nan iterations:   0 |
 ```
-根据参考配置训练后，训练到第最后一个Iter时（即iteration: 1000），Loss值和基准值loss的差异不超过5%。
+### 训练目标
+
+根据参考配置训练后，训练到第500个Iter时，Loss值小于1.603。
+```bash
+[2025-10-24 03:57:08] iteration      500/     500 | consumed samples:        32000 | elapsed time per iteration (ms): 5574.8 | throughput per GPU (TFLOP/s/GPU): 557.0 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.603242E+00 | loss scale: 1.0 | grad norm: 11.632 | tokens/sec/gpu: 11761.6 | number of skipped iterations:   0 | number of nan iterations:   0 |
+```
