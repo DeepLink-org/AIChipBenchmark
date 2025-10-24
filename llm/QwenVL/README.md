@@ -122,7 +122,7 @@ log_string += f' tokens/sec/gpu: {tokens_per_gpu_per_sec:.1f} |'
 ```
 ### 训练目标
 
-根据参考配置训练后，训练到第500个Iter时，Loss值小于1.603。
+根据参考配置训练后，训练到第500个Iter时，Loss值和基准值loss的差异不超过5%。
 ```bash
 [2025-10-24 03:57:08] iteration      500/     500 | consumed samples:        32000 | elapsed time per iteration (ms): 5574.8 | throughput per GPU (TFLOP/s/GPU): 557.0 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.603242E+00 | loss scale: 1.0 | grad norm: 11.632 | tokens/sec/gpu: 11761.6 | number of skipped iterations:   0 | number of nan iterations:   0 |
 ```
