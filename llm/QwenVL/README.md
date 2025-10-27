@@ -119,9 +119,11 @@ log_string += f' tokens/sec/gpu: {tokens_per_gpu_per_sec:.1f} |'
 [2025-10-24 09:52:15] iteration      480/     500 | consumed samples:        30720 | elapsed time per iteration (ms): 5533.0 | throughput per GPU (TFLOP/s/GPU): 560.9 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.605485E+00 | loss scale: 1.0 | grad norm: 17.924 | tokens/sec/gpu: 11844.5 | number of skipped iterations:   0 | number of nan iterations:   0 |
 [2025-10-24 09:52:21] iteration      481/     500 | consumed samples:        30784 | elapsed time per iteration (ms): 5859.3 | throughput per GPU (TFLOP/s/GPU): 529.7 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.770668E+00 | loss scale: 1.0 | grad norm: 18.098 | tokens/sec/gpu: 11185.0 | number of skipped iterations:   0 | number of nan iterations:   0 |
 [2025-10-24 09:52:27] iteration      482/     500 | consumed samples:        30848 | elapsed time per iteration (ms): 5546.0 | throughput per GPU (TFLOP/s/GPU): 559.6 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.682535E+00 | loss scale: 1.0 | grad norm: 9.632 | tokens/sec/gpu: 11816.9 | number of skipped iterations:   0 | number of nan iterations:   0 |
+```
 ### 训练目标
 
 根据参考配置训练后，训练到第500个Iter时，Loss值和基准值loss的差异不超过5%。
+
 ```bash
 [2025-10-24 09:54:09] iteration      500/     500 | consumed samples:        32000 | elapsed time per iteration (ms): 5622.0 | throughput per GPU (TFLOP/s/GPU): 552.0 | learning rate: 1.000000E-06 | global batch size:    64 | lm loss: 1.596570E+00 | loss scale: 1.0 | grad norm: 11.199 | tokens/sec/gpu: 11657.0 | number of skipped iterations:   0 | number of nan iterations:   0 |
 ```
