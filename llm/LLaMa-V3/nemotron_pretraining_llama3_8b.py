@@ -24,7 +24,7 @@ def set_seed(seed=42):
 
 def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
 
-    recipe = llm.llama3_8b.pretrain_recipe(dir="/mnt/shared-storage-user/ailab-sys/chenyuxiao/log2", num_nodes=nodes, num_gpus_per_node=gpus_per_node)
+    recipe = llm.llama3_8b.pretrain_recipe(num_nodes=nodes, num_gpus_per_node=gpus_per_node)
 
     # 修改 trainer 参数
     recipe.trainer.max_steps = 100
@@ -34,26 +34,19 @@ def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
     recipe.trainer.strategy.context_parallel_size = 1
     recipe.trainer.strategy.virtual_pipeline_model_parallel_size = None
     recipe.trainer.strategy.use_te_rng_tracker = True
-    # 关闭保存
-    recipe.trainer.strategy.ckpt_async_save=False
-    recipe.trainer.strategy.save_ckpt_format = "torch_dist"
-    recipe.trainer.strategy.parallel_save = False
 
 
     recipe.data=run.Config(
             PreTrainingDataModule,
-            paths="/mnt/shared-storage-user/ailab-sys/chenyuxiao/NeMo_2025_Q4_pro/datasets_precessed/llama3-8B/arxiv_sample_text_document",
+            paths="./llama3-8B/arxiv_sample_text_document",
             seq_length=8192,
             micro_batch_size=1,
             global_batch_size=128,
-            tokenizer=run.Config(AutoTokenizer, "/mnt/shared-storage-user/ailab-sys/chenyuxiao/huggingface/model/models--llama3--llama3-8B/snapshots/8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920"),
+            tokenizer=run.Config(AutoTokenizer, "./models--llama3--llama3-8B/snapshots/8cde5ca8380496c9a6cc7ef3a8b46a0372a1d920"),
             split='900,50,50',
             seed=2025,
     )
     
-        # 修改 optim 参数
-    # recipe.optim.config.warmup_steps = 10
-
     # 启用性能优化
     recipe.model.config.enable_cuda_graph = True
     recipe.model.config.cross_entropy_fusion_impl = "te"
