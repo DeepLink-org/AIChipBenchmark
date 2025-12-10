@@ -25,7 +25,7 @@ python scripts/nlp_language_modeling/preprocess_data_for_megatron.py \
 
 ## 配置文件
 - 模型配置文件配置，可以参考 https://github.com/NVIDIA-NeMo/NeMo/tree/main?tab=readme-ov-file 中 ./NeMo/nemo/collections/llm/recipes 文件
-- 性能测试：`nemotron_pretraining_qwen3_8b.py`(8卡)、`nemotron_pretraining_qwen3_30b_a3b.py`(8卡)和`nemotron_pretraining_qwen25_72b.py`(32卡)
+- 性能测试：`nemotron_pretraining_qwen3_8b.py`(8卡)、`nemotron_pretraining_qwen25_7b.py`(8卡)、`nemotron_pretraining_qwen3_30b_a3b.py`(8卡)、`nemotron_pretraining_qwen2_72b.py`(32卡)和`nemotron_pretraining_qwen25_72b.py`(32卡)
 
 
 预训练超参说明：
@@ -37,9 +37,9 @@ python scripts/nlp_language_modeling/preprocess_data_for_megatron.py \
 
 | Model     | #GPUs | global_batch_size  | seq_length| 
 |-----------|--------|----|----|
-|qwen3_8b|8|128|8192|
+|qwen3_8b / qwen25_7b|8|128|8192|
 |qwen3_30b_a3b|8|32|4096|
-|qwen25_72b|32|64|8192|
+|qwen25_72b / qwen2_72b|32|64|8192|
 
 
 
