@@ -35,6 +35,8 @@ def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
     recipe.trainer.strategy.virtual_pipeline_model_parallel_size = 5
     recipe.trainer.strategy.use_te_rng_tracker = True
     recipe.trainer.strategy.ckpt_async_save=False
+    # 完全关闭保存ckpt，减少io开销
+    recipe.log.ckpt = None
 
     recipe.data=run.Config(
             PreTrainingDataModule,

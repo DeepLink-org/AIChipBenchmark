@@ -69,6 +69,8 @@ def configure_recipe(nodes: int = 1, gpus_per_node: int = 8):
     recipe.model.config.recompute_granularity = None
     recipe.model.config.recompute_method = None
     recipe.model.config.recompute_num_layers = None
+    # 完全关闭保存ckpt，减少io开销
+    recipe.log.ckpt = None
  
     recipe.trainer.callbacks = []
     recipe.trainer.callbacks=[run.Config(TimingCallback, log_tokens_per_sec = True)]
