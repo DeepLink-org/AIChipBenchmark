@@ -3,88 +3,106 @@
 
 ## 准备工作
 
-- 代码下载：https://github.com/vllm-project/vllm.git (0590ec3fd9857063c43c80df281e24c16c51b2ec)
-- 安装：参考 https://docs.vllm.ai/en/latest/getting_started/installation/gpu.html#build-wheel-from-source, 需根据厂商环境进行适配
-- 模型： LLAMA2 7B [meta-llama/Llama-2-7b-chat-hf](https://huggingface.co/meta-llama/Llama-2-7b-chat-hf)
+- 代码下载：https://github.com/sgl-project/sglang.git (5e2cda6158e670e64b926a9985d65826c537ac82)
+- 安装：参考 https://docs.sglang.io/get_started/install.html, 需根据厂商环境进行适配
+- 模型： Llama-3.1-8B-Instruct [meta-llama/Llama-3.1-8B-Instruct](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct)
 
 
 ## 启动及数据采集
 
 ### 数据集
-使用 `sonnet` [数据集](https://github.com/vllm-project/vllm/blob/main/benchmarks/sonnet.txt)
+使用 `ShareGPT_V3_unfiltered_cleaned_split` [数据集](https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered/blob/main/ShareGPT_V3_unfiltered_cleaned_split.json)
 
 
+### 启动Server
+```
+python -m sglang.launch_server \
+  --model-path meta-llama/Llama-3.1-8B-Instruct
+  --disaggregation-mode prefill \
+  --port 30000
+
+python -m sglang.launch_server \
+  --model-path meta-llama/Llama-3.1-8B-Instruct
+  --disaggregation-mode decode \
+  --port 30001 \
+  --base-gpu-id 1
+
+python -m sglang_router.launch_router --pd-disaggregation --prefill http://127.0.0.1:30000 --decode http://127.0.0.1:30001 --host 0.0.0.0 --port 8000  
+
+```
 
 ### 性能测试
-新增`disagg_performance_benchmark_new.sh`到目录：`benchmarks/disagg_benchmarks`下，
 
-测试命令：
+测试脚本统一采用`sglang benchmark`，可使用`pip install sglang`安装。
 
-```bash
-sh disagg_performance_benchmark.sh disagg_prefill
+评测命令参考如下：
+
+```
+backend="sglang"
+dataset_name="random"
+dataset_path="/path/to/ShareGPT_V3_unfiltered_cleaned_split.json"
+
+            TRANSFORMERS_OFFLINE=1 \
+            python3 -m sglang.bench_serving \
+                --random-range-ratio 1 \
+                --backend ${backend} \
+                --dataset-name random \
+                --dataset-path ${dataset_path} \
+                --random-input-len $input_len \
+                --random-output-len $out_len \
+                --num-prompts $no_prompts \
+                --max-concurrency $concurrency \
+                --request-rate ${qps} \
+                --host 127.0.0.1 --port 8000 \
+                --flush-cache \
+                --output-file "${current_date}/speed_in${input_len}_out${out_len}_n${no_prompts}_pd_llama.csv" \
+                --seed 42 2>&1 | tee ${current_date}/speed_in${input_len}_out${out_len}_n${no_prompts}_pd_llama.log
 ```
 
-即可生成测试日志到当前目录下。
+保持`qps`和评测方案一致，保持`random-range-ratio`和`seed`一致。其余参数可自行调整，以发挥推理引擎和芯片的最佳性能。建议配置`concurrency`为`$(( qps * 2 ))`，`no_prompts`为`$(( qps * 100 ))`，可参考`bench_pd.sh`。
 
-日志格式：
+
+基准`Benchmark`的详细输出日志可联系`Deeplink`评测团队获取。
+
+## 评测结果
 ```bash
-
 ============ Serving Benchmark Result ============
-Successful requests:                     20        
-Benchmark duration (s):                  23.25     
-Total input tokens:                      2199      
-Total generated tokens:                  1668      
-Request throughput (req/s):              0.86      
-Output token throughput (tok/s):         71.74     
-Total Token throughput (tok/s):          166.32    
+Backend:                                 sglang    
+Traffic request rate:                    64.0      
+Max request concurrency:                 128       
+Successful requests:                     6400      
+Benchmark duration (s):                  271.12    
+Total input tokens:                      3276800   
+Total input text tokens:                 3276800   
+Total input vision tokens:               0         
+Total generated tokens:                  3276800   
+Total generated tokens (retokenized):    3276879   
+Request throughput (req/s):              23.61     
+Input token throughput (tok/s):          12086.34  
+Output token throughput (tok/s):         12086.34  
+Peak output token throughput (tok/s):    13873.00  
+Peak concurrent requests:                189       
+Total token throughput (tok/s):          24172.68  
+Concurrency:                             126.92    
+----------------End-to-End Latency----------------
+Mean E2E Latency (ms):                   5376.75   
+Median E2E Latency (ms):                 5377.32   
 ---------------Time to First Token----------------
-Mean TTFT (ms):                          40.30     
-Median TTFT (ms):                        39.17     
-P99 TTFT (ms):                           46.15     
+Mean TTFT (ms):                          74.66     
+Median TTFT (ms):                        62.73     
+P99 TTFT (ms):                           271.46    
 -----Time per Output Token (excl. 1st token)------
-Mean TPOT (ms):                          10.90     
-Median TPOT (ms):                        10.85     
-P99 TPOT (ms):                           11.25     
----------------Inter-token Latency----------------
-Mean ITL (ms):                           10.76     
-Median ITL (ms):                         10.72     
-P99 ITL (ms):                            13.59     
-----------------End-to-end Latency----------------
-Mean E2EL (ms):                          938.06    
-Median E2EL (ms):                        935.99    
-P99 E2EL (ms):                           1029.90   
+Mean TPOT (ms):                          10.38     
+Median TPOT (ms):                        10.40     
+P99 TPOT (ms):                           10.70     
+---------------Inter-Token Latency----------------
+Mean ITL (ms):                           10.37     
+Median ITL (ms):                         10.20     
+P95 ITL (ms):                            13.11     
+P99 ITL (ms):                            43.91     
+Max ITL (ms):                            320.67    
 ==================================================
-GPU 0, memory usage:
-64.42 GB
-GPU 1, memory usage:
-64.25 GB
-
 
 ```
 
-
-
-### 日志解析（可选）
-提供`log_parser_v2.py` 一键解析工具，生成相应的评测数据。
-
-安装依赖：
-``` bash
-pip install pandas openpyxl
-```
-
-使用步骤：
-1. 确保所有日志文件存放在指定目录（默认：`./logs`）
-2. 运行脚本：python log_parser_v2.py 即生成报告文件 `benchmark_report.xlsx` 到当前目录下
-
-
-`benchmark_report.xlsx` 输出性能指标如下：
-
-|qps	|input len	|Median TTFT (ms)	|Median TPOT (ms)|
-| ---- | ---- | ---- | ---- |
-|1	|128	|39.17	|10.85|
-|1	|256	|52.5	|10.95|
-|1	|512	|69.3	|12.1|
-|1	|1024	|108.51	|16.66|
-|1	|2048	|173.68	|25.1|
-|...	|..	|...	|... |
 
