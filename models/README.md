@@ -1,98 +1,209 @@
-# AIChipBenchmark
+# 模型测试
+模型测试工具按照《测试指标与测试方法》进行模型的精度和性能评测。
 
-## 硬件测评
+模型测试工具基于 Pytorch 框架，对于非Pytorch框架，本仓库的代码和训练使用的超参数可以用于参考，测试方法依照《测试指标与测试方法》进行。
 
-硬件测评是面向国产深度学习加速卡进行的多维度评测工作。硬件测评提供一套标准的行业测试方法，提供技术规格、软件生态、功能测试、性能测试等多视角，并周期性产出标准测评结果。硬件测评结果可用作各类国产加速卡在不同维度表现的参考。
+本仓库支持的模型列表如下：
 
-硬件测评适用于芯片生产厂商、应用厂商、前场销售及第三方机构对计算机视觉领域面向云侧的深度学习训练芯片（包含AI芯片模组和AI加速卡等形态）进行设计、采购、评测。
+```
+├── classification
+│   ├── densenet121
+│   ├── efficientnet-b2
+│   ├── inceptionv3
+│   ├── mobilenetv2
+│   ├── resnet50
+│   ├── senet50
+│   ├── shufflenetv2
+│   ├── swintransformer
+│   └── vgg16
+├── detection
+│   ├── cascade_rcnn_r50
+│   ├── centernet_r18
+│   ├── faster_rcnn_r50
+│   ├── fcos_r50
+│   ├── mask_rcnn_r50
+│   ├── retinanet
+│   ├── solo
+│   ├── ssd300
+│   ├── swin
+│   └── yolo_v3
+├── segmentation
+│   ├── apcnet
+│   ├── DeeplabV3-R50
+│   ├── FCN-R50
+│   ├── nnunet
+│   └── PSPNet-R50
 
-### 面向硬件的传统模型评测实施方案
+```
 
-上海人工智能实验室每季度开展针对国产AI训练芯片的评测工作，多家国产芯片厂商积极参与。实验室对送测芯片进行技术规格、软件生态、功能、性能等多维度测试，并按季度产出硬件评测报告。评测结论可以为算力市场产品选型提供参考依据，同时芯片厂商也可更加客观的发现自身软硬件产品的不足，促进产品迭代。通过组织AI芯片厂商开展评测工作，可以根本上推进软硬件之间的解耦适配，极大降低算力使用门槛，实现算力要素多样化，为国产芯片高效服务国产大模型保驾护航。 
+不同的模型其实现代码有所不同，具体如下：
+- nnUNet 使用[NVIDIA/DEepLearningExamples](https://github.com/NVIDIA/DeepLearningExamples/tree/master/PyTorch/Segmentation/nnUNet)的实现
+- inceptionv3参考[本仓库实现](/networks/imagenet_example/README.md)
+- 其余模型均使用`OpenMMLab`的实现，测试方法参考[OpenMMLab官方文档](https://openmmlab.com/)
 
-面向硬件的传统模型评测实施方案的主要评测指标如下：
-<table>
-    <tr>
-        <th>测试大项</th>
-        <th>测试小项</th>
-        <th>小项说明</th>
-    </tr>
-    <tr>
-        <td rowspan="4">基本技术规格 </td>
-        <td>算力</td>
-        <td>考察计算芯片的计算能力，关键指标之一</td>
-    </tr>
-    <tr>
-        <td>内存规格</td>
-        <!-- <a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md"></a> -->
-        <td>考察芯片的显存容量和显存带宽</td>
-    </tr>
-    <tr>
-        <td>通信带宽</td>
-        <td>考察芯片的跨卡跨机数据传输能力</td>
-    </tr>
-    <tr>
-        <td>能耗比</td>
-        <td>芯片算力与芯片标称功耗的比值</td>
-    </tr> 
- 	<tr>
-        <td rowspan="2">软件生态</td>
-        <td>软件栈</td>
-        <td>考察芯片对于常用库的支持程度 </td>
-    </tr>
-    <tr>
-        <td>开放性</td>
-        <td>考察芯片与业界主流异构计算的模型、接口兼容程度</td>
-    </tr>
-    <tr>
-        <td rowspan="2">功能测试</td>
-        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/tree/main/operators/accuracy_test">算子功能 </a></td>
-        <td>考察芯片对算子的支持程度</td>
-    </tr>
-    <tr>
-        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/models/readme.md">模型功能 </a></td>
-        <td>考察芯片对基础模型的支持程度</td>
-    </tr>
-    <tr>
-        <td rowspan="3">性能测试</td>
-        <td><a href ="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/readme.md">算子性能 </a></td>
-        <td>考察算子在芯片上的运算时间</td>
-    </tr>
-    <tr>
-        <td>模型性能</td>
-        <td>考察模型在芯片上的训练性能</td>
-    </tr>
-    <tr>
-        <td><a href="https://github.com/DeepLink-org/AIChipBenchmark/blob/main/operators/speed_test/communication_bench/readme.md">通信性能</a></td>
-        <td>考察算⼦在单节点多芯⽚、多节点多芯⽚条件下的性能表现</td>
-    </tr>
-</table>
+对于所有的模型，其仓库均有相应的训练脚本，按照相应仓库的文档进行训练即可。下面提供自动测试工具的使用方法，但该工具需要满足一定的环境条件要求，请参考文档使用。
 
-### 面向硬件的大模型评测实施方案
-
-国产AI芯片的大模型支持也是重点考察的能力，增加大模型训练功能、性能及稳定性指标、大模型微调功能、性能以及稳定性指标以及大模型推理性能及成本指标，全面覆盖模型训练、微调和推理三大关键环节： 
+# 自动测试工具使用流程
+`tools`提供了可以在**Slurm环境**下运行的测试脚本。非Slurm环境下不能使用本工具，可以参考本工具的测试流程进行训练任务。
 
 
-评测的结果将为硬件厂商提供宝贵的参考信息，帮助他们了解自身在大模型领域的发展方向和优化需求。同时，评测结果也将为用户和开发者提供有价值的参考，帮助他们选择适合自己需求的硬件设备，并优化和改进应用程序的性能和效果。 
-我们期待通过这一评测方案的实施，能够为国产硬件的发展注入新的动力，推动大模型技术的普及和应用，促进语言处理领域的创新和进步。 
+1. 部署pytorch环境，确保环境中使用Pytorch1.8 with CUDA11
 
-<div align="center">
-  <img src="large_model_evalue.png" width="400"/>
-</div>
+2. 设置环境
+    - 下载`mmdetection,mmclassification,mmsegmentation,mmcv,nvdia-DeepLeariningExamples`仓库，并设置相应的环境变量：`MMCLS_PATH=/path/to/mmclassification`, `MMCV_PATH=/path/to/mmcv`, `MMDET_PATH=/path/to/mmdetection`, `MMSEG_PATH=/path/to/mmsegmentation`, `NNUNET_PATH=/path/to/DeepLearningExamples`。**若没有设置，则会运行出错**。
+      - 下载可以参考如下指令：
+          ```sh
+          git clone https://github.com/open-mmlab/mmcv.git
+          git clone https://github.com/open-mmlab/mmclassification.git
+          git clone https://github.com/open-mmlab/mmdetection.git
+          git clone https://github.com/open-mmlab/mmsegmentation.git
+          git clone https://github.com/NVIDIA/DeepLearningExamples.git
+          ```
+    版本可参考：[mmcv1.5.3](https://github.com/open-mmlab/mmcv/tree/v1.5.3)、[mmclassification0.23.2](https://github.com/open-mmlab/mmpretrain/tree/v0.23.2)、[mmdetection2.24.1](https://github.com/open-mmlab/mmdetection/tree/v2.24.1)、[mmsegemention0.24.1](https://github.com/open-mmlab/mmsegmentation/tree/v0.24.1)
+    - mmcv安装参考[官方文档](https://mmcv.readthedocs.io/en/latest/get_started/build.html)。收集性能数据时可参考本目录下的`iter_timer.py`文件，修改`${MMCV_PATH}/mmcv/runner/hooks/iter_timer.py`。并设定环境变量：
+        ```sh
+        export PYTHONPATH=${MMCV_PATH}:$PYTHONPATH
+        ```
+    - `export MAX_NODES=4`: 设置Slurm最多占用的节点数量，在测试openmm模型的时候，会查询当前使用的节点数量，如果超过这个值则新的任务会等待。
 
-## 测评流程
+    - 数据集：
+      - OpenMM要求在相应的仓库下将数据集根目录软链接到 `$MMREPO/data`，参考[官方文档](https://mmclassification.readthedocs.io/en/latest/getting_started.html#prepare-datasets)。例如在   `mmclassification`目录，软连接 `mmclassification/data` 到 `/path/to/dataset`.
+      - `imagenet_example` 数据集环境参考[imagenet_example文档](/networks/imagenet_example/README.md)
 
-<div align="center">
-  <img src="pipeline.png" width="90%"/>
-</div>
+    - nnUNet测试环境，具体测试环境参考官方文档进行搭建，下面给出简单示例：
+      - 环境搭建：
+        ```sh
+        cd DeepLearningExamples/PyTorch/Segmentation/nnUNet
+        pip install -r requirements.txt -U
 
-1. 季度测评开始前，联系硬件测评工作人员(或邮件联系\"deeplink@pjlab.org.cn\")，确认参与本季度测评。
-2. 季度测评开始，基于实施方案对自家芯片进行测试，并进行数据汇总。
-3. 相关链接可见：
-    * [评测仓库&数据下载](https://github.com/DeepLink-org/AIChipBenchmark)。
-4. 厂商提交数据和验证材料，实验室会进行结果核验。
-5. 实验室完成单芯片评测报告整理，点对点发放。 
-6. 厂商可对评测数据进行反馈。
+        # install pytorch-lightning-1.5.10
 
-## 联系方式
-如果您所代表的硬件厂商有意向参与硬件测评，或您有相关建议和反馈，有欢迎与我们联系：deeplink@pjlab.org.cn。
+        pip install pytorch-lightning==1.5.10 --user
+
+        # install dali
+        wget https://developer.download.nvidia.com/compute/redist/cuda/11.0/nvidia-dali/nvidia_dali-0.22.0-1313465-cp38-cp38-manylinux1_x86_64.whl
+
+        pip install --extra-index-url https://developer.download.nvidia.com/compute/redist --upgrade nvidia-dali-cuda110
+
+        # install apex
+
+        git clone https://github.com/NVIDIA/apex
+        cd apex
+        srun -p $partition --gres=gpu:1 -n1 -N 1 python setup.py --cpp_ext --cuda_ext bdist_wheel
+        pip install dist/apex*.whl --user
+
+        ```
+      - 下载数据集，参考：
+        ```sh
+        cd $NNUNET_PATH
+        mkdir -p data
+        pushd data
+        # dataset ref: https://drive.google.com/drive/folders/1HqEgzS8BV2c7xYNrZdEAnrHk7osJJ--2
+        wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1RzPB1_bqzQhlWvU-YGvZzhx2omcDh38C' -O task04.tar
+        tar -xvf task04.tar
+        popd
+
+        python preprocess.py --data ./data --results ./data --task 04 --dim 3
+        ```
+
+
+3. 测试模型：`cd tools && sh run_all_models.sh slurm_partition /path/to/result model_configs.json`
+
+    这一步会使用Slurm测试所有支持的的模型。无法在非Slurm环境下使用。
+
+   - 参数解释：
+        - slurm_partition: slurm分区
+        - 输出的路径`your/path/to/result`，表示测试过程中的log等文件的存放地，以及测试结果文件 `model_results.json` 的存放地。该路径需要**绝对路径**。
+        - 测试结果在 `your/path/to/result/model_results.json`
+
+
+## 更新与安装指南（PyTorch 2.x 适配版）
+
+由于原有仓库版本较老，在 PyTorch 2.x 版本上存在一些适配性问题，不利于在先进显卡上测试性能，因此使用更新适配的代码仓库。
+
+### 环境要求
+
+- PyTorch 2.x
+- CUDA 11.8+ / 12.x
+- 支持的显卡架构: Ampere (8.0, 8.6, 8.9), Hopper (9.0, 9.0a)
+
+### 安装步骤
+
+#### 1. 安装 onedl-mmcv（基础库）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmcv.git
+cd onedl-mmcv
+git checkout 55264919c4651084882c2ba6f888834aee9a4627
+
+export TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0;9.0a"
+export MMCV_WITH_OPS=1
+export FORCE_CUDA=1
+python -m pip install -e . -v --no-build-isolation
+cd ..
+```
+
+#### 2. 安装 onedl-mmdetection（检测）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmdetection.git
+cd onedl-mmdetection
+git checkout c43b35b7553db279de8609a321cfd7fa0b733492
+pip install -e .
+cd ..
+```
+
+#### 3. 安装 onedl-mmsegmentation（分割）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmsegmentation.git
+cd onedl-mmsegmentation
+git checkout f2dc1d0758593eaec3b257ed185fea35c86e6d26
+pip install -e .
+cd ..
+```
+
+#### 4. 安装 onedl-mmpretrain（分类，原 mmclassification）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmpretrain.git
+cd onedl-mmpretrain
+git checkout 128b6079ecc1d089577d1e99b1f786887f48a1c1
+pip install -e .
+cd ..
+```
+
+### 性能测试适配
+
+#### 问题说明
+
+原有的 `iter_timer.py` 由于 `IterTimerHook` 已经从 mmcv 移到了 mmengine，接口有变化，因此无法直接使用。
+
+#### 解决方案
+
+创建 `custom_iter_timer_hook.py`，并放置到以下目录：
+- `onedl-mmdetection/`
+- `onedl-mmsegmentation/`
+- `onedl-mmpretrain/`
+
+#### 配置示例
+
+修改相应的 config 文件加载自定义 hook，例如测试分类模型 `resnet50`，使用pretrain.sh进行测试,默认测试FP32性能精度，可以通过修改optim_wrapper.type=AmpOptimWrapper来测试FP16性能：
+
+```python
+_base_ = [
+    '../_base_/models/resnet50.py',
+    '../_base_/datasets/imagenet_bs32.py',
+    '../_base_/schedules/imagenet_bs256.py',
+    '../_base_/default_runtime.py'
+]
+
+# 导入自定义 hook
+custom_imports = dict(imports=['custom_iter_timer_hook'], allow_failed_imports=False)
+
+# 添加性能统计 hook
+custom_hooks = [dict(type='CustomIterTimerHook', begin_iter=200, end_iter=500)]
+
+# 禁用默认 timer 避免冲突
+default_hooks = dict(timer=None)
+```
