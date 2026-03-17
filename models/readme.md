@@ -116,3 +116,94 @@
         - 输出的路径`your/path/to/result`，表示测试过程中的log等文件的存放地，以及测试结果文件 `model_results.json` 的存放地。该路径需要**绝对路径**。
         - 测试结果在 `your/path/to/result/model_results.json`
 
+
+## 更新与安装指南（PyTorch 2.x 适配版）
+
+由于原有仓库版本较老，在 PyTorch 2.x 版本上存在一些适配性问题，不利于在先进显卡上测试性能，因此使用更新适配的代码仓库。
+
+### 环境要求
+
+- PyTorch 2.x
+- CUDA 11.8+ / 12.x
+- 支持的显卡架构: Ampere (8.0, 8.6, 8.9), Hopper (9.0, 9.0a)
+
+### 安装步骤
+
+#### 1. 安装 onedl-mmcv（基础库）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmcv.git
+cd onedl-mmcv
+git checkout 55264919c4651084882c2ba6f888834aee9a4627
+
+export TORCH_CUDA_ARCH_LIST="8.0;8.6;8.9;9.0;9.0a"
+export MMCV_WITH_OPS=1
+export FORCE_CUDA=1
+python -m pip install -e . -v --no-build-isolation
+cd ..
+```
+
+#### 2. 安装 onedl-mmdetection（检测）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmdetection.git
+cd onedl-mmdetection
+git checkout c43b35b7553db279de8609a321cfd7fa0b733492
+pip install -e .
+cd ..
+```
+
+#### 3. 安装 onedl-mmsegmentation（分割）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmsegmentation.git
+cd onedl-mmsegmentation
+git checkout f2dc1d0758593eaec3b257ed185fea35c86e6d26
+pip install -e .
+cd ..
+```
+
+#### 4. 安装 onedl-mmpretrain（分类，原 mmclassification）
+
+```sh
+git clone https://github.com/VBTI-development/onedl-mmpretrain.git
+cd onedl-mmpretrain
+git checkout 128b6079ecc1d089577d1e99b1f786887f48a1c1
+pip install -e .
+cd ..
+```
+
+### 性能测试适配
+
+#### 问题说明
+
+原有的 `iter_timer.py` 由于 `IterTimerHook` 已经从 mmcv 移到了 mmengine，接口有变化，因此无法直接使用。
+
+#### 解决方案
+
+创建 `custom_iter_timer_hook.py`，并放置到以下目录：
+- `onedl-mmdetection/`
+- `onedl-mmsegmentation/`
+- `onedl-mmpretrain/`
+
+#### 配置示例
+
+修改相应的 config 文件加载自定义 hook，例如测试分类模型 `resnet50`，使用pretrain.sh进行测试,默认测试FP32性能精度，可以通过修改optim_wrapper.type=AmpOptimWrapper来测试FP16性能：
+
+```python
+_base_ = [
+    '../_base_/models/resnet50.py',
+    '../_base_/datasets/imagenet_bs32.py',
+    '../_base_/schedules/imagenet_bs256.py',
+    '../_base_/default_runtime.py'
+]
+
+# 导入自定义 hook
+custom_imports = dict(imports=['custom_iter_timer_hook'], allow_failed_imports=False)
+
+# 添加性能统计 hook
+custom_hooks = [dict(type='CustomIterTimerHook', begin_iter=200, end_iter=500)]
+
+# 禁用默认 timer 避免冲突
+default_hooks = dict(timer=None)
+```
