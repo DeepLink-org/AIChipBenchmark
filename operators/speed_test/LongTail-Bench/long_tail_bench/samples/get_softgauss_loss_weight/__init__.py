@@ -29,7 +29,7 @@ def gen_np_args(N):
 
     def gen_base(num):
         data = np.random.randn(num, num, 1)
-        data = data.astype(np.float)
+        data = data.astype(float)
         return data
 
     logit = gen_base(N)

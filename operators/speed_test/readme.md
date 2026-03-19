@@ -104,5 +104,5 @@ srun -p $partition --gres=gpu:1 --exclusive python ./long_tail_bench/api/api.py 
 计算和打分的结果存在输出参数`path/to/ltout.csv`中。
 note:
 如果为cpu上的验证，上述测试命令中基准文件`../longtail_perf_gpu.csv` 替换为`../longtail_perf_cpu.csv`;
-仅支持fp16方式的特殊芯片，上述测试命令中基准文件`../longtail_perf_gpu.csv` 替换为`../longtail_perf_gpu_fp16.csv`。
+仅支持fp16方式的特殊芯片，上述测试命令中基准文件`../longtail_perf_gpu.csv` 替换为`../longtail_perf_gpu_fp16.csv`，切换工作目录到`LongTail-Bench-fp16`。
 

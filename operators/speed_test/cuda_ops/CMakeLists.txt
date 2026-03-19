@@ -77,9 +77,11 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(PROJECT_NAME "gemm")
 add_executable(gemm cuda_gemm.cpp)
 
-target_link_libraries(${PROJECT_NAME} ${CUDA_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${CUDA_LIBRARIES} ${CUDA_CUBLAS_LIBRARIES} ${CUDNN_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CUDNN_INCLUDE_DIR})
 
 add_executable(conv cudnn_convforward.cpp)
 
-target_link_libraries(conv ${CUDA_LIBRARIES} ${CUDNN_LIBRARIES})
+target_link_libraries(conv ${CUDA_LIBRARIES} ${CUDNN_LIBRARIES} ${CUDNN_LIBRARIES})
+target_include_directories(conv PRIVATE ${CUDNN_INCLUDE_DIR})
 

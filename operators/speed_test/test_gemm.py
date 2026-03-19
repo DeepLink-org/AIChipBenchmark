@@ -36,7 +36,7 @@ if __name__ == '__main__':
             print('Failed to decode the output.')
         time = format(time / 1000, '.3f')
         if not validate:
-            df.at[i, 'baseline'] = time
+            df.at[i, 'baseline'] = float(time)
         else:
             df.at[i, 'time'] = time
             df.at[i, 'score'] = round(

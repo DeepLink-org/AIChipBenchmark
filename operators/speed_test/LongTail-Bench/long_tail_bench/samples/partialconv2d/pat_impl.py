@@ -47,7 +47,7 @@ class PartialConv2d(nn.Conv2d):
         )
 
         self.mask_kernel_numel = np.prod(self.weight_mask_updater.shape[1:4])
-        self.mask_kernel_numel = np.asscalar(self.mask_kernel_numel)
+        self.mask_kernel_numel = self.mask_kernel_numel.item()
         if FRAMEWORK is FrameType.Parrots:
             self.keep_init_weight_same()
 

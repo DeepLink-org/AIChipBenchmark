@@ -47,10 +47,23 @@ void random_init(T *data, size_t m, size_t n, bool trans) {
         random_init(data, m*n);
 }
 
+
+#include <type_traits>
+
+// 通用模板：直接输出
 template <typename T>
 void print_mat(T* src, size_t size) {
-    for (int i=0; i < size; i++) {
-        std::cout << *(src+i) << " ";
+    for (int i = 0; i < size; i++) {
+        std::cout << *(src + i) << " ";
+    }
+    std::cout << std::endl;
+}
+
+// __half特化：转float输出
+template <>
+void print_mat<__half>(__half* src, size_t size) {
+    for (int i = 0; i < size; i++) {
+        std::cout << __half2float(*(src + i)) << " ";
     }
     std::cout << std::endl;
 }
