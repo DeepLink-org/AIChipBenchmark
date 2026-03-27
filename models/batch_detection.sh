@@ -2,18 +2,18 @@
 # 批量测试 detection 模型（在 rjob 内部运行）
 # 每个模型分别测试 FP32 和 FP16，2节点16卡
 
-cd /mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmdetection
+cd ./models/onedl-mmdetection
 PYTHON=/usr/bin/python3
 
-export MMDET_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmdetection
-export MMCV_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmcv
+export MMDET_PATH=./models/onedl-mmdetection
+export MMCV_PATH=./models/onedl-mmcv
 export SYSTEM_PACKAGES=/usr/local/lib/python3.10/dist-packages
 export PYTHONPATH=$MMDET_PATH:$MMCV_PATH:$SYSTEM_PACKAGES:$PYTHONPATH
 
 export NCCL_NVLS_ENABLE=0
 
 NGPU=16
-WEIGHT_DIR=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/weight
+WEIGHT_DIR=./models/weight
 mkdir -p work_dirs
 
 # 权重映射

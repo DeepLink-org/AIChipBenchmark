@@ -2,7 +2,7 @@
 # 批量测试 segmentation 模型（在 rjob 内部运行）
 # 每个模型分别测试 FP32 和 FP16，2节点16卡
 
-cd /mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmsegmentation
+cd ./models/onedl-mmsegmentation
 PYTHON=/usr/bin/python3
 
 export MMSEG_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmsegmentation
@@ -13,7 +13,7 @@ export PYTHONPATH=$MMSEG_PATH:$MMCV_PATH:$SYSTEM_PACKAGES:$PYTHONPATH
 export NCCL_NVLS_ENABLE=0
 
 NGPU=16
-WEIGHT_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/weight/resnet50_v1c-2cccc1ad.pth
+WEIGHT_PATH=./models/weight/resnet50_v1c-2cccc1ad.pth
 mkdir -p work_dirs
 
 # 模型列表: "config_path model_name"

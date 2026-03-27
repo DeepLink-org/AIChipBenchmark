@@ -2,11 +2,11 @@
 # 批量测试 pretrain 模型（在 rjob 内部运行）
 # 每个模型分别测试 FP32 和 FP16，2节点16卡
 
-cd /mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmpretrain
+cd ./models/onedl-mmpretrain
 PYTHON=/usr/bin/python3
 
-export MMPRE_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmpretrain
-export MMCV_PATH=/mnt/shared-storage-user/ailab-sys/chenyuxiao/h200_Benchmark/AIChipBenchmark/models/onedl-mmcv
+export MMPRE_PATH=./models/onedl-mmpretrain
+export MMCV_PATH=./models/onedl-mmcv
 export SYSTEM_PACKAGES=/usr/local/lib/python3.10/dist-packages
 export PYTHONPATH=$MMPRE_PATH:$MMCV_PATH:$SYSTEM_PACKAGES:$PYTHONPATH
 
