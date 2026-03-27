@@ -187,7 +187,7 @@ cd ..
 
 #### 配置示例
 
-修改相应的 config 文件加载自定义 hook，例如测试分类模型 `resnet50`，使用pretrain.sh进行测试,默认测试FP32性能精度，可以通过修改optim_wrapper.type=AmpOptimWrapper来测试FP16性能：
+修改相应的 config 文件加载自定义 hook，例如测试分类模型 `resnet50`，使用pretrain.sh进行测试,默认测试FP32性能精度，可以通过修改optim_wrapper.type=AmpOptimWrapper来测试FP16性能，批量测试脚本为batch_detection.py，batch_pretrain.py，batch_segmentation.py：
 
 ```python
 _base_ = [
@@ -204,5 +204,5 @@ custom_imports = dict(imports=['custom_iter_timer_hook'], allow_failed_imports=F
 custom_hooks = [dict(type='CustomIterTimerHook', begin_iter=200, end_iter=500)]
 
 # 禁用默认 timer 避免冲突
-default_hooks = dict(timer=None)
+default_hooks = dict(timer=None, checkpoint=None)
 ```
